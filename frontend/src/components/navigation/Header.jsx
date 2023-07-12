@@ -29,6 +29,7 @@ import {
   IconSettings,
   IconChevronDown,
   IconBell,
+  IconSwitchHorizontal,
 } from "@tabler/icons-react";
 
 const HEADER_HEIGHT = rem(60);
@@ -118,6 +119,12 @@ const useStyles = createStyles((theme) => ({
       ),
     },
   },
+  headerIcon: {
+    cursor: "pointer",
+    "&:hover": {
+      fill: "white",
+    },
+  },
 
   linkIcon: {
     ref: getStylesRef("icon"),
@@ -137,6 +144,15 @@ const useStyles = createStyles((theme) => ({
         opacity: 0.9,
       },
     },
+  },
+  footer: {
+    paddingTop: theme.spacing.md,
+    marginTop: theme.spacing.md,
+    borderTop: `${rem(1)} solid ${theme.fn.lighten(
+      theme.fn.variant({ variant: "filled", color: theme.primaryColor })
+        .background,
+      0.1
+    )}`,
   },
 }));
 
@@ -158,9 +174,10 @@ export function AppHeader() {
           <Image
             src={"../../img/logo.png"}
             width={50}
-            alt="logo"
+            alt="LOGO"
             className={classes.logo}
           />
+
           <Burger onClick={open} className={classes.burger} size="sm" />
           <Group>
             <TextInput
@@ -169,8 +186,8 @@ export function AppHeader() {
               className={classes.searchInput}
             />
             <Group>
-              <IconBell />
-              <IconMessage />
+              <IconBell className={classes.headerIcon} />
+              <IconMessage className={classes.headerIcon} />
             </Group>
             <Menu
               width={260}
@@ -254,6 +271,28 @@ export function AppHeader() {
                   </a>
                 );
               })}
+            </Navbar.Section>
+            <Navbar.Section className={classes.footer}>
+              <a
+                href="/"
+                className={classes.link}
+                onClick={(event) => event.preventDefault()}
+              >
+                <IconSwitchHorizontal
+                  className={classes.linkIcon}
+                  stroke={1.5}
+                />
+                <span>Change account</span>
+              </a>
+
+              <a
+                href="/"
+                className={classes.link}
+                onClick={(event) => event.preventDefault()}
+              >
+                <IconLogout className={classes.linkIcon} stroke={1.5} />
+                <span>Logout</span>
+              </a>
             </Navbar.Section>
           </Navbar>
         </Drawer.Content>

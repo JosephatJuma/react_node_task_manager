@@ -15,10 +15,10 @@ import {
   createStyles,
 } from "@mantine/core";
 import { NavigationProgress, nprogress } from "@mantine/nprogress";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import { IconX } from "@tabler/icons-react";
-// import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   button: {
@@ -46,7 +46,7 @@ export default function Login() {
   };
   return (
     <>
-      {/* {loggedIn && <Navigate to={"/"} />} */}
+      {loggedIn && <Navigate to={"/"} />}
       <NavigationProgress autoReset={true} />
       <Container size={420} my={40}>
         <Title
@@ -60,7 +60,7 @@ export default function Login() {
         </Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
           Do not have an account yet?{" "}
-          <Anchor size="sm" to="/sign-up">
+          <Anchor component={Link} size="sm" to="/register">
             Create account
           </Anchor>
         </Text>
@@ -70,7 +70,7 @@ export default function Login() {
         <Paper withBorder shadow="lg" p={30} mt={30} radius="md">
           <TextInput
             label="Email"
-            placeholder="you@mantine.dev"
+            placeholder="username@service.com"
             required
             onInput={(e) =>
               setCredentials({ ...credentials, email: e.target.value })
@@ -87,7 +87,7 @@ export default function Login() {
           />
           <Group position="apart" mt="lg">
             <Checkbox label="Remember me" />
-            <Anchor to={"/reset-password"} size="sm">
+            <Anchor component={Link} to={"/reset-password"} size="sm">
               Forgot password?
             </Anchor>
           </Group>
