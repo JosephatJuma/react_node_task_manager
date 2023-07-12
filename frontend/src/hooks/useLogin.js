@@ -1,10 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../state/reducers/loginSlice";
+import { Navigate } from "react-router-dom";
 function useLogin() {
+  const dispatch = useDispatch();
+
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const loggedIn = useSelector((state) => state.login.loggedIn);
 
   const clearErr = () => {
     setMessage("");
@@ -22,8 +26,10 @@ function useLogin() {
     try {
       setIsSending(true);
       const response = await axios.post(url, formData);
-      setMessage(response.data);
-      setLoggedIn(true);
+      setMessage(response.data.message);
+      if (response.data.success === true) {
+        dispatch(login(response.data.user));
+      }
     } catch (error) {
       setMessage(error.message);
     }

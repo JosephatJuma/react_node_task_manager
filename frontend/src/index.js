@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { MantineProvider } from "@mantine/core";
+import { Provider } from "react-redux";
+import store from "./state/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const Application = () => {
   return (
@@ -14,7 +16,9 @@ const Application = () => {
 };
 root.render(
   <React.StrictMode>
-    <Application />
+    <Provider store={store}>
+      <Application />
+    </Provider>
   </React.StrictMode>
 );
 
