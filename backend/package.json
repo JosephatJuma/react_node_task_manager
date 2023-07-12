@@ -1,0 +1,17 @@
+{
+  "name": "task_manager",
+  "version": "1.0.0",
+  "description": "app for manainging tasks",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "task-manager"
+  ],
+  "author": "Juma Josephat",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
