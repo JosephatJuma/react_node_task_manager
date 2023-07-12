@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextInput,
   PasswordInput,
@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import { IconX } from "@tabler/icons-react";
 import { Navigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 const useStyles = createStyles((theme) => ({
   button: {
     position: "relative",
@@ -35,17 +35,18 @@ const useStyles = createStyles((theme) => ({
 export default function Login() {
   const { classes, cx } = useStyles();
   const [credentials, setCredentials] = useState({});
-  const { message, isSending, loggedIn, clearErr, submitData } = useLogin();
+  const { message, isSending, clearErr, submitData } = useLogin();
+  const loggedIn = useSelector((state) => state.login.loggedIn);
 
   const api_url = process.env.REACT_APP_API_URL;
   useEffect(() => {
     nprogress.complete();
   });
   const submit = () => {
-    submitData(`${api_url}/v1/login/`, credentials);
+    submitData(`http://192.168.1.5:1000/v1/api/auth/login/`, credentials);
   };
   return (
-    <>
+    <React.Fragment>
       {loggedIn && <Navigate to={"/"} />}
       <NavigationProgress autoReset={true} />
       <Container size={420} my={40}>
@@ -111,6 +112,6 @@ export default function Login() {
           <Text color="white">{message}</Text>
         </Dialog>
       </Container>
-    </>
+    </React.Fragment>
   );
 }

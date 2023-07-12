@@ -172,7 +172,7 @@ export function AppHeader() {
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container className={classes.header} size={"98%"}>
           <Image
-            src={"../../img/logo.png"}
+            src="./logo.png"
             width={50}
             alt="LOGO"
             className={classes.logo}
