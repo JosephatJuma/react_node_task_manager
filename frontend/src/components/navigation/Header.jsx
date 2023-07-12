@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import logo from "../../img/logo.png";
 import { data } from "../shared/data";
 import {
   createStyles,
@@ -17,6 +17,7 @@ import {
   Navbar,
   Flex,
   getStylesRef,
+  Image,
 } from "@mantine/core";
 
 import { useDisclosure } from "@mantine/hooks";
@@ -60,13 +61,19 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     height: "100%",
-    margin: "auto",
     width: "100%",
+    backgroundImage: theme.fn.linearGradient(
+      5,
+      theme.colors.blue[6],
+      theme.colors.green[6]
+    ),
+    color: "white",
   },
 
   burger: {
     [theme.fn.largerThan("sm")]: {
       display: "none",
+      color: "white",
     },
   },
   logo: {
@@ -148,7 +155,12 @@ export function AppHeader() {
     <>
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container className={classes.header} size={"98%"}>
-          <h2 className={classes.logo}>Logo here</h2>
+          <Image
+            src={"../../img/logo.png"}
+            width={50}
+            alt="logo"
+            className={classes.logo}
+          />
           <Burger onClick={open} className={classes.burger} size="sm" />
           <Group>
             <TextInput
@@ -220,6 +232,7 @@ export function AppHeader() {
       >
         <Drawer.Content className={classes.drawer}>
           <Navbar className={classes.navbar}>
+            <Image src={"../../img/logo.png"} width={50} alt="logo" />
             <Navbar.Section>
               {data.map((item) => {
                 return (

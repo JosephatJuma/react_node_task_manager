@@ -1,13 +1,11 @@
 import "./App.css";
-import React, { useState } from "react";
-import { SideBar } from "./components/navigation/SideBar";
-import { AppHeader } from "./components/navigation/Header";
-
+import React from "react";
+import Home from "./views/home/Home";
+import Login from "./views/auth/Login";
 function App() {
   return (
     <div className="App">
-      <AppHeader />
-      <SideBar />
+      <Login />
     </div>
   );
 }

@@ -7,10 +7,16 @@ import { data } from "../shared/data";
 const useStyles = createStyles((theme) => ({
   navbar: {
     paddingTop: 30,
-    backgroundColor: theme.fn.variant({
-      variant: "filled",
-      color: theme.primaryColor,
-    }).background,
+
+    // backgroundColor: theme.fn.variant({
+    //   variant: "filled",
+    //   color: theme.primaryColor,
+    // }).background,
+    backgroundImage: theme.fn.linearGradient(
+      5,
+      theme.colors.green[6],
+      theme.colors.blue[6]
+    ),
     [theme.fn.smallerThan("sm")]: {
       display: "none",
     },
