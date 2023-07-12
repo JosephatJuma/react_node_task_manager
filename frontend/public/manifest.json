@@ -1,5 +1,5 @@
 {
-  "short_name": "React App",
+  "short_name": "Task Manager",
   "name": "Create React App Sample",
   "icons": [
     {
@@ -8,7 +8,7 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#9623e2",
   "background_color": "#ffffff"
 }

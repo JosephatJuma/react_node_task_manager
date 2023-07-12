@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import logo from "../../img/logo.png";
 import { data } from "../shared/data";
 import {
   createStyles,
@@ -17,6 +17,7 @@ import {
   Navbar,
   Flex,
   getStylesRef,
+  Image,
 } from "@mantine/core";
 
 import { useDisclosure } from "@mantine/hooks";
@@ -28,6 +29,7 @@ import {
   IconSettings,
   IconChevronDown,
   IconBell,
+  IconSwitchHorizontal,
 } from "@tabler/icons-react";
 
 const HEADER_HEIGHT = rem(60);
@@ -60,13 +62,19 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     height: "100%",
-    margin: "auto",
     width: "100%",
+    backgroundImage: theme.fn.linearGradient(
+      5,
+      theme.colors.blue[6],
+      theme.colors.green[6]
+    ),
+    color: "white",
   },
 
   burger: {
     [theme.fn.largerThan("sm")]: {
       display: "none",
+      color: "white",
     },
   },
   logo: {
@@ -111,6 +119,12 @@ const useStyles = createStyles((theme) => ({
       ),
     },
   },
+  headerIcon: {
+    cursor: "pointer",
+    "&:hover": {
+      fill: "white",
+    },
+  },
 
   linkIcon: {
     ref: getStylesRef("icon"),
@@ -131,6 +145,15 @@ const useStyles = createStyles((theme) => ({
       },
     },
   },
+  footer: {
+    paddingTop: theme.spacing.md,
+    marginTop: theme.spacing.md,
+    borderTop: `${rem(1)} solid ${theme.fn.lighten(
+      theme.fn.variant({ variant: "filled", color: theme.primaryColor })
+        .background,
+      0.1
+    )}`,
+  },
 }));
 
 export function AppHeader() {
@@ -148,7 +171,13 @@ export function AppHeader() {
     <>
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container className={classes.header} size={"98%"}>
-          <h2 className={classes.logo}>Logo here</h2>
+          <Image
+            src={"../../img/logo.png"}
+            width={50}
+            alt="LOGO"
+            className={classes.logo}
+          />
+
           <Burger onClick={open} className={classes.burger} size="sm" />
           <Group>
             <TextInput
@@ -157,8 +186,8 @@ export function AppHeader() {
               className={classes.searchInput}
             />
             <Group>
-              <IconBell />
-              <IconMessage />
+              <IconBell className={classes.headerIcon} />
+              <IconMessage className={classes.headerIcon} />
             </Group>
             <Menu
               width={260}
@@ -220,6 +249,7 @@ export function AppHeader() {
       >
         <Drawer.Content className={classes.drawer}>
           <Navbar className={classes.navbar}>
+            <Image src={"../../img/logo.png"} width={50} alt="logo" />
             <Navbar.Section>
               {data.map((item) => {
                 return (
@@ -241,6 +271,28 @@ export function AppHeader() {
                   </a>
                 );
               })}
+            </Navbar.Section>
+            <Navbar.Section className={classes.footer}>
+              <a
+                href="/"
+                className={classes.link}
+                onClick={(event) => event.preventDefault()}
+              >
+                <IconSwitchHorizontal
+                  className={classes.linkIcon}
+                  stroke={1.5}
+                />
+                <span>Change account</span>
+              </a>
+
+              <a
+                href="/"
+                className={classes.link}
+                onClick={(event) => event.preventDefault()}
+              >
+                <IconLogout className={classes.linkIcon} stroke={1.5} />
+                <span>Logout</span>
+              </a>
             </Navbar.Section>
           </Navbar>
         </Drawer.Content>
