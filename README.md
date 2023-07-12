@@ -2,28 +2,28 @@
 # Calculator 
 <p>
     <a href="#backers" alt="followers">
-        <img src="https://img.shields.io/github/followers/sarahannie" />
+        <img src="https://img.shields.io/github/followers/JosephatJuma" />
     </a>
     <a href="#backers" alt="language">
-        <img src="https://img.shields.io/github/languages/count/sarahannie/calculator" />
+        <img src="https://img.shields.io/github/languages/count//react_node_task_manager" />
     </a>
     <a href="#backers" alt="top language">
-        <img src="https://img.shields.io/github/languages/top/kalibbalajohnson/calculator" />
+        <img src="https://img.shields.io/github/languages/top/JosephatJuma/react_node_task_manager" />
     </a>
     <a href="#backers" alt="pull request">
-        <img src="https://img.shields.io/github/issues-pr/sarahannie/calculator" />
+        <img src="https://img.shields.io/github/issues-pr/JosephatJuma/react_node_task_manager" />
     </a>
     <a href="#backers" alt="file">
-        <img src="https://img.shields.io/github/directory-file-count/sarahannie/calculator" />
+        <img src="https://img.shields.io/github/directory-file-count/JosephatJuma/react_node_task_manager" />
     </a>
     <a href="#backers" alt="npm_size">
         <img src="https://img.shields.io/bundlephobia/min/npm"/>
     </a>
     <a href="#backers" alt="rep_star">
-        <img src="https://img.shields.io/github/stars/sarahannie/calculator"/>
+        <img src="https://img.shields.io/github/stars/JosephatJuma/react_node_task_manager"/>
     </a>
     <a href="#backers" alt="rep_star">
-        <img src="https://img.shields.io/github/stars/sarahannie"/>
+        <img src="https://img.shields.io/github/stars/JosephatJuma"/>
     </a>
 </p>
 
