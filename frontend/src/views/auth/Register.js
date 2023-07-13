@@ -86,7 +86,9 @@ function Register() {
           onSubmit={form.onSubmit(
             (values, _event) => {
               submitData(`${api_url}auth/register/`, values);
-              dispatch(register(values));
+              if (!message) {
+                dispatch(register(values));
+              }
             },
             (validationErrors, _values, _event) => {
               return;
