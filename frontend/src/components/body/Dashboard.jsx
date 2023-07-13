@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SimpleGrid,
   Skeleton,
   Container,
+  Group,
   Stack,
   useMantineTheme,
   px,
@@ -11,14 +12,21 @@ import {
   Button,
   createStyles,
   RingProgress,
+  TextInput,
+  Drawer,
 } from "@mantine/core";
+import { Calendar, DateInput, DatePicker, TimeInput } from "@mantine/dates";
+import { Modal } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
   IconCalendarDue,
   IconCalendarCheck,
   IconCalendarOff,
   IconHandMove,
+  IconPlus,
 } from "@tabler/icons-react";
 
+import dayjs from "dayjs";
 const getChild = (height, component) => (
   <Card radius={"lg"}>
     <Card.Section>{component}</Card.Section>
@@ -49,6 +57,18 @@ const useStyles = createStyles((theme) => ({
 export function Dashboard({ user }) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
+  const [date, setDate] = useState(null > "");
+  const [selected, setSelected] = useState([]);
+  const handleSelect = (date) => {
+    const isSelected = selected.some((s) => dayjs(date).isSame(s, "date"));
+    if (isSelected) {
+      setSelected((current) =>
+        current.filter((d) => !dayjs(d).isSame(date, "date"))
+      );
+    } else {
+      setSelected((current) => [...current, date]);
+    }
+  };
   const [tasks, setTasks] = React.useState([
     {
       title: "Write a blog post",
@@ -71,15 +91,17 @@ export function Dashboard({ user }) {
       status: "Completed",
     },
   ]);
+  const [modalOpen, { open, close }] = useDisclosure(false);
+  //const [opened, { open, close }] = useDisclosure(false);
   return (
     <div style={{ width: "100%", margin: 10 }}>
+      <h3 style={{ color: "#800080" }}>
+        Hello,
+        {user.first_name + " " + user.last_name}
+        <IconHandMove />
+      </h3>
       <SimpleGrid cols={2} breakpoints={[{ maxWidth: "xs", cols: 1 }]}>
         <Stack>
-          <h4 style={{ color: "blue" }}>
-            Hello,
-            {user.first_name + " " + user.last_name}
-            <IconHandMove />
-          </h4>
           {getChild(
             getSubHeight(3, px(theme.spacing.md)),
             <Card
@@ -192,7 +214,38 @@ export function Dashboard({ user }) {
         {getChild(
           BASE_HEIGHT,
           <>
-            <h3>Upcoming Tasks</h3>
+            <Group position="center">
+              <Calendar
+                getDayProps={(date) => ({
+                  selected: selected.some((s) => dayjs(date).isSame(s, "date")),
+                  onClick: () => handleSelect(date),
+                })}
+                styles={{
+                  calendarHeader: { color: "#800080" },
+                  calendar: {
+                    color: "#800080",
+                  },
+                }}
+              />
+              {/* <DatePicker value={date} onChange={setDate} /> */}
+            </Group>
+            <Group
+              display={"flex"}
+              sx={{
+                justifyContent: "space-between",
+                padding: 20,
+                alignSelf: "center",
+              }}
+            >
+              <h3>Upcoming Tasks</h3>
+              <Button
+                onClick={open}
+                sx={{ backgroundColor: "#800080" }}
+                leftIcon={<IconPlus />}
+              >
+                Add new task
+              </Button>
+            </Group>
             {tasks.map((task, index) => {
               return (
                 <Card
@@ -207,10 +260,48 @@ export function Dashboard({ user }) {
                 </Card>
               );
             })}
-            <Button>Add new task</Button>
           </>
         )}
       </SimpleGrid>
+      <Drawer
+        opened={modalOpen}
+        onClose={close}
+        title="Create New Task"
+        overlayProps={{
+          color:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[9]
+              : theme.colors.gray[2],
+          opacity: 0.55,
+          blur: 3,
+        }}
+        transitionProps={{
+          transition: "slide-left",
+          duration: 150,
+          timingFunction: "linear",
+        }}
+        position="right"
+        size={theme.fn.largerThan("sm") ? "sm" : "lg"}
+      >
+        <form>
+          <TextInput placeholder="Title" label="Title:" />
+          <TextInput placeholder="Title" label="Description:" />
+          <Group sx={{ width: "100%" }}>
+            <DateInput
+              value={date}
+              onChange={setDate}
+              label="Due Date"
+              placeholder="2023-20-12"
+            />
+            <TimeInput label="Due Time" />
+          </Group>
+          <Button
+            sx={{ backgroundColor: "#800080", width: "100%", marginTop: 20 }}
+          >
+            Save Task
+          </Button>
+        </form>
+      </Drawer>
     </div>
   );
 }

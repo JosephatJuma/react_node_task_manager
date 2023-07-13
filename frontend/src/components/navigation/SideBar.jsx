@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createStyles, Navbar, getStylesRef, rem } from "@mantine/core";
 import { IconSwitchHorizontal, IconLogout } from "@tabler/icons-react";
-
+import { ScrollArea } from "@mantine/core";
 import { data } from "../shared/data";
 
 const useStyles = createStyles((theme) => ({
@@ -106,27 +106,34 @@ export function SideBar() {
   ));
 
   return (
-    <Navbar height={600} width={{ sm: 300 }} p="md" className={classes.navbar}>
-      <Navbar.Section className={classes.header}>{links}</Navbar.Section>
-      <Navbar.Section className={classes.footer}>
-        <a
-          href="/"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
+    <Navbar
+      width={{ sm: 300 }}
+      p="md"
+      className={classes.navbar}
+      sx={{ position: "sticky" }}
+    >
+      <ScrollArea h={"100%"}>
+        <Navbar.Section className={classes.header}>{links}</Navbar.Section>
+        <Navbar.Section className={classes.footer}>
+          <a
+            href="/"
+            className={classes.link}
+            onClick={(event) => event.preventDefault()}
+          >
+            <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
+            <span>Change account</span>
+          </a>
 
-        <a
-          href="/"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
-      </Navbar.Section>
+          <a
+            href="/"
+            className={classes.link}
+            onClick={(event) => event.preventDefault()}
+          >
+            <IconLogout className={classes.linkIcon} stroke={1.5} />
+            <span>Logout</span>
+          </a>
+        </Navbar.Section>
+      </ScrollArea>
     </Navbar>
   );
 }
