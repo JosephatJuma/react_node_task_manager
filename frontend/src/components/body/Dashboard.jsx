@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SimpleGrid,
   Group,
@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { AddTaskForm } from "./AddTaskForm";
+import axios from "axios";
 import {
   IconCalendarDue,
   IconCalendarCheck,
@@ -33,7 +34,6 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     color: "green",
-
     cursor: "pointer",
     justifyContent: "space-between",
     // backgroundImage: theme.fn.linearGradient(
@@ -48,6 +48,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 export function Dashboard({ user }) {
+  const api_url = process.env.REACT_APP_API_URL;
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -85,7 +86,18 @@ export function Dashboard({ user }) {
       status: "Completed",
     },
   ]);
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get(`${api_url}tasks/${user._id}`);
 
+      setTasks(response.data.tasks);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchTasks();
+  });
   return (
     <div style={{ width: "100%", margin: 10 }}>
       <h3 style={{ color: "#800080" }}>
@@ -93,7 +105,10 @@ export function Dashboard({ user }) {
         {user.name}
         <IconHandMove />
       </h3>
-      <SimpleGrid cols={2} breakpoints={[{ maxWidth: "xs", cols: 1 }]}>
+      <SimpleGrid
+        cols={2}
+        breakpoints={[{ maxWidth: "xs", cols: 1, margin: 10 }]}
+      >
         <Stack>
           {getChild(
             getSubHeight(3, px(theme.spacing.md)),
@@ -240,7 +255,11 @@ export function Dashboard({ user }) {
                   padding="lg"
                   radius="lg"
                   withBorder
-                  sx={{ margin: 10 }}
+                  sx={{
+                    margin: 10,
+                    borderColor: `${task.color}c0`,
+                    borderWidth: 2,
+                  }}
                   key={index}
                 >
                   <Text>{task.title}</Text>
