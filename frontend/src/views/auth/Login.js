@@ -43,7 +43,7 @@ export default function Login() {
     nprogress.complete();
   });
   const submit = () => {
-    submitData(`http://192.168.1.5:1000/v1/api/auth/login/`, credentials);
+    submitData(`${api_url}auth/login/`, credentials);
   };
   return (
     <React.Fragment>
