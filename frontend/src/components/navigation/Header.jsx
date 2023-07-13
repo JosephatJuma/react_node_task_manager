@@ -1,5 +1,6 @@
 import { useState } from "react";
 import logo from "../../img/logo.png";
+import logo2 from "../../img/logo2.png";
 import { data } from "../shared/data";
 import {
   createStyles,
@@ -30,6 +31,7 @@ import {
   IconChevronDown,
   IconBell,
   IconSwitchHorizontal,
+  IconMenu,
 } from "@tabler/icons-react";
 
 const HEADER_HEIGHT = rem(60);
@@ -158,14 +160,14 @@ export function AppHeader() {
     <>
       <Header height={HEADER_HEIGHT} className={classes.root}>
         <Container className={classes.header} size={"98%"}>
-          <Image
-            src="./logo.png"
-            width={50}
-            alt="LOGO"
-            className={classes.logo}
-          />
+          <Image src={logo} width={100} alt="LOGO" className={classes.logo} />
 
-          <Burger onClick={open} className={classes.burger} size="sm" />
+          <Burger
+            onClick={open}
+            className={classes.burger}
+            size="lg"
+            color="white"
+          />
           <Group>
             <TextInput
               placeholder="Search for task"
@@ -238,7 +240,7 @@ export function AppHeader() {
       >
         <Drawer.Content className={classes.drawer}>
           <Navbar className={classes.navbar}>
-            <Image src={"../../img/logo.png"} width={50} alt="logo" />
+            <Image src={logo2} width={100} alt="LOGO" />
             <Navbar.Section>
               {data.map((item) => {
                 return (
