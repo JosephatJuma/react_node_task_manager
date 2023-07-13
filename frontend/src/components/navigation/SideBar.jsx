@@ -33,19 +33,13 @@ const useStyles = createStyles((theme) => ({
   header: {
     paddingBottom: theme.spacing.md,
     marginBottom: `calc(${theme.spacing.md} * 1.5)`,
-    borderBottom: `${rem(1)} solid ${theme.fn.lighten(
-      theme.fn.variant({ variant: "filled", color: theme.primaryColor })
-        .background,
-      0.1
-    )}`,
   },
 
   footer: {
     paddingTop: theme.spacing.md,
     marginTop: theme.spacing.md,
     borderTop: `${rem(1)} solid ${theme.fn.lighten(
-      theme.fn.variant({ variant: "filled", color: theme.primaryColor })
-        .background,
+      theme.fn.variant({ variant: "filled", color: "#800080" }).background,
       0.1
     )}`,
   },
