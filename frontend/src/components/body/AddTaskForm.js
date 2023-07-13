@@ -49,10 +49,7 @@ export function AddTaskForm() {
     };
     console.log(task);
     try {
-      const response = await axios.post(
-        `http://localhost:1000/v1/api/taskhs/${user._id}`,
-        task
-      );
+      const response = await axios.post(`${api_url}/tasks/${user._id}`, task);
       setErr(response.data.message);
       if (response.data.success === true) {
         close();
@@ -179,12 +176,6 @@ export function AddTaskForm() {
             onChange={setLabel}
           />
           <Box sx={{ margin: "auto" }}>
-            <Slider
-              value={priority}
-              onChange={setPriority}
-              thumbSize={30}
-              color="#800080"
-            />
             <Text mt="xl" size="xl" fw={"bold"}>
               {priority >= 80
                 ? "Very High"
@@ -194,6 +185,12 @@ export function AddTaskForm() {
                 ? "Low Priority"
                 : "Very Low Priority"}
             </Text>
+            <Slider
+              value={priority}
+              onChange={setPriority}
+              thumbSize={30}
+              color="#800080"
+            />
           </Box>
           <Button
             sx={{ backgroundColor: "#800080", width: "100%", marginTop: 20 }}
