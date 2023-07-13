@@ -14,9 +14,11 @@ exports.register = async (req, res) => {
     }
     const newUser = new Register({ name, email, password });
     await newUser.save();
-    res
-      .status(200)
-      .send({ message: "User registration successful", success: true });
+    res.status(200).send({
+      message: "User registration successful",
+      success: true,
+      user: newUser,
+    });
   } catch (error) {
     res
       .status(200)

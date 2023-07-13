@@ -17,15 +17,15 @@ import {
 import { Link } from "react-router-dom";
 import { IconBrandGoogle, IconBrandTwitter, IconX } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
-import useLogin from "../../hooks/useLogin";
+import useRegister from "../../hooks/userRegister";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../state/reducers/registerSlice";
 function Register() {
   const api_url = process.env.REACT_APP_API_URL;
-  const dispatch = useDispatch();
-  const registered = useSelector((state) => state.register.registered);
-  const { message, isSending, clearErr, submitData } = useLogin();
+
+  const { message, isSending, registered, clearErr, submitData } =
+    useRegister();
   const form = useForm({
     initialValues: {
       name: "",
@@ -85,10 +85,7 @@ function Register() {
         <form
           onSubmit={form.onSubmit(
             (values, _event) => {
-              submitData(`${api_url}auth/register/`, values);
-              if (!message) {
-                dispatch(register(values));
-              }
+              submitData(`http://localhost:1000/v1/api/auth/register`, values);
             },
             (validationErrors, _values, _event) => {
               return;
