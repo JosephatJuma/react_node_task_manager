@@ -38,6 +38,6 @@ app.get("/", (req, res) => {
 
 app.use("/v1/api", apiRoutes);
 
-app.listen(port, process.env.HOSTNAME, () => {
+app.listen(port, () => {
   console.log(`app running on prot ${port}`);
 });
