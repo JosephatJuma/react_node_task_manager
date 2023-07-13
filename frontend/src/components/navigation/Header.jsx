@@ -19,6 +19,9 @@ import {
   Flex,
   getStylesRef,
   Image,
+  Indicator,
+  Dialog,
+  Button,
 } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
@@ -146,6 +149,7 @@ const useStyles = createStyles((theme) => ({
 
 export function AppHeader() {
   const [opened, { open, close }] = useDisclosure(false);
+  const [dialog, setDialog] = useState(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const user = {
     name: "juma josephat",
@@ -158,7 +162,11 @@ export function AppHeader() {
   //const [mobile, setMobile] = useState(useMantineTheme().fn.smallerThan("sm"));
   return (
     <>
-      <Header height={HEADER_HEIGHT} className={classes.root}>
+      <Header
+        height={HEADER_HEIGHT}
+        className={classes.root}
+        sx={{ position: "sticky" }}
+      >
         <Container className={classes.header} size={"98%"}>
           <Image src={logo} width={100} alt="LOGO" className={classes.logo} />
 
@@ -175,7 +183,9 @@ export function AppHeader() {
               className={classes.searchInput}
             />
             <Group>
-              <IconBell className={classes.headerIcon} />
+              <Indicator inline label="10" size={16} radius={"lg"}>
+                <IconBell className={classes.headerIcon} />
+              </Indicator>
               <IconMessage className={classes.headerIcon} />
             </Group>
             <Menu
@@ -215,7 +225,10 @@ export function AppHeader() {
                 <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
                   Account settings
                 </Menu.Item>
-                <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>
+                <Menu.Item
+                  icon={<IconLogout size="0.9rem" stroke={1.5} />}
+                  onClick={() => setDialog(true)}
+                >
                   Logout
                 </Menu.Item>
                 <Menu.Divider />
@@ -288,6 +301,22 @@ export function AppHeader() {
           </Navbar>
         </Drawer.Content>
       </Drawer>
+      <Dialog
+        opened={dialog}
+        withCloseButton
+        onClose={() => setDialog(false)}
+        size="lg"
+        radius="md"
+        sx={{ backgroundColor: "red", color: "white" }}
+      >
+        <Text size="sm" mb="xs" weight={500}>
+          Sure, you want quit?
+        </Text>
+
+        <Group align="flex-end">
+          <Button onClick={close}>Logout</Button>
+        </Group>
+      </Dialog>
     </>
   );
 }
