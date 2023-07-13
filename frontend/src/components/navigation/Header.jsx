@@ -209,7 +209,7 @@ export function AppHeader() {
                       size={50}
                     />
 
-                    <IconChevronDown size={rem(12)} stroke={1.5} />
+                    <IconChevronDown size={rem(20)} stroke={3} color="white" />
                   </Group>
                 </UnstyledButton>
               </Menu.Target>
@@ -304,11 +304,12 @@ export function AppHeader() {
         opened={dialog}
         withCloseButton
         onClose={() => setDialog(false)}
+        position={{ top: 20, right: 20 }}
         size="lg"
         radius="md"
-        sx={{ backgroundColor: "red", color: "white" }}
+        sx={{ backgroundColor: "#d0342c", color: "white" }}
       >
-        <Text size="sm" mb="xs" weight={500}>
+        <Text size="lg" mb="xs" weight={500}>
           Sure, you want quit?
         </Text>
 

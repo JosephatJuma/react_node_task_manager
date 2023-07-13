@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const register = require("./api/auth");
+const auth = require("./api/auth");
+const usertasks = require("./api/tasks");
 
-router.use("/auth", register);
+router.use("/auth", auth);
+router.use("/tasks", usertasks);
+
 module.exports = router;
