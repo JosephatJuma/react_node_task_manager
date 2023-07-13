@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Paper,
   TextInput,
@@ -10,17 +10,26 @@ import {
   Anchor,
   Divider,
   Container,
+  Dialog,
+  LoadingOverlay,
+  Text,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { IconBrandGoogle, IconBrandTwitter } from "@tabler/icons-react";
+import { IconBrandGoogle, IconBrandTwitter, IconX } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
-
+import useRegister from "../../hooks/userRegister";
+import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../state/reducers/registerSlice";
 function Register() {
+  const api_url = process.env.REACT_APP_API_URL;
+
+  const { message, isSending, registered, clearErr, submitData } =
+    useRegister();
   const form = useForm({
     initialValues: {
+      name: "",
       email: "",
-      first_name: "",
-      last_name: "",
       password: "",
       terms: true,
     },
@@ -30,12 +39,33 @@ function Register() {
         val.length <= 6
           ? "Password should include at least 6 characters"
           : null,
-      last_name: (val) => (val.length <= 6 ? "Name is invalid" : null),
+      name: (val) =>
+        /^[a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?/.test(
+          val
+        )
+          ? null
+          : "Invalid Name",
     },
   });
 
   return (
-    <Container size={500} my={40}>
+    <Container size={500}>
+      {registered === true && <Navigate to={"/login"} />}
+      <LoadingOverlay visible={isSending} overlayBlur={2} />
+      <Dialog
+        opened={message}
+        onClose={clearErr}
+        withCloseButton
+        size="lg"
+        radius="md"
+        position={{ top: 20, left: 20 }}
+        shadow="xl"
+        bg={"dark"}
+        display={"flex"}
+      >
+        <IconX size="1.1rem" color="white" />
+        <Text color="white">{message}</Text>
+      </Dialog>
       <h2>Create Account</h2>
       <Paper radius="md" withBorder shadow="lg" p={30} mt={30}>
         <Group grow mb="md" mt="md">
@@ -52,28 +82,27 @@ function Register() {
           labelPosition="center"
           my="lg"
         />
-        <form onSubmit={form.onSubmit(() => {})}>
+        <form
+          onSubmit={form.onSubmit(
+            (values, _event) => {
+              submitData(`http://localhost:1000/v1/api/auth/register`, values);
+            },
+            (validationErrors, _values, _event) => {
+              return;
+            }
+          )}
+        >
           <Stack>
-            <Group position="apart">
-              <TextInput
-                label="First Name"
-                placeholder="Your name"
-                value={form.values.first_name}
-                onChange={(event) =>
-                  form.setFieldValue("name", event.currentTarget.value)
-                }
-                radius="md"
-              />
-              <TextInput
-                label="Last Name"
-                placeholder="Your name"
-                value={form.values.last_name}
-                onChange={(event) =>
-                  form.setFieldValue("name", event.currentTarget.value)
-                }
-                radius="md"
-              />
-            </Group>
+            <TextInput
+              label="Full Name"
+              placeholder="Your name"
+              value={form.values.name}
+              onChange={(event) =>
+                form.setFieldValue("name", event.currentTarget.value)
+              }
+              error={form.errors.name && form.errors.name}
+              radius="md"
+            />
 
             <TextInput
               label="Email"

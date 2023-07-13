@@ -34,7 +34,6 @@ import {
   IconChevronDown,
   IconBell,
   IconSwitchHorizontal,
-  IconMenu,
 } from "@tabler/icons-react";
 
 const HEADER_HEIGHT = rem(60);
