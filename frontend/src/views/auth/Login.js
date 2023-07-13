@@ -25,11 +25,7 @@ const useStyles = createStyles((theme) => ({
     position: "relative",
     zIndex: 1,
     padding: 0,
-    backgroundImage: theme.fn.linearGradient(
-      5,
-      theme.colors.blue[6],
-      theme.colors.green[6]
-    ),
+    backgroundImage: theme.fn.linearGradient(5, "#800080", "orange"),
   },
 }));
 export default function Login() {

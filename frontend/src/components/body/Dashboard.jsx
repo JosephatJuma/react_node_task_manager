@@ -14,6 +14,7 @@ import {
   RingProgress,
   TextInput,
   Drawer,
+  Textarea,
 } from "@mantine/core";
 import { Calendar, DateInput, DatePicker, TimeInput } from "@mantine/dates";
 import { Modal } from "@mantine/core";
@@ -28,7 +29,7 @@ import {
 
 import dayjs from "dayjs";
 const getChild = (height, component) => (
-  <Card radius={"lg"}>
+  <Card radius={"lg"} shadow="md">
     <Card.Section>{component}</Card.Section>
   </Card>
 );
@@ -97,7 +98,7 @@ export function Dashboard({ user }) {
     <div style={{ width: "100%", margin: 10 }}>
       <h3 style={{ color: "#800080" }}>
         Hello,
-        {user.first_name + " " + user.last_name}
+        {user.name}
         <IconHandMove />
       </h3>
       <SimpleGrid cols={2} breakpoints={[{ maxWidth: "xs", cols: 1 }]}>
@@ -285,7 +286,7 @@ export function Dashboard({ user }) {
       >
         <form>
           <TextInput placeholder="Title" label="Title:" />
-          <TextInput placeholder="Title" label="Description:" />
+          <Textarea placeholder="Title" label="Description:" />
           <Group sx={{ width: "100%" }}>
             <DateInput
               value={date}

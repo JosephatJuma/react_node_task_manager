@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginSlice from "./reducers/loginSlice";
+import registerSlice from "./reducers/registerSlice";
 const store = configureStore({
   reducer: {
     login: loginSlice,
-    // tasks: tasksReducers,
+    register: registerSlice,
     // tasksToday: tasksToadyReducer,
     // loggedIn:loggedInReducer,
   },
