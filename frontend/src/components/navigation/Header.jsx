@@ -19,8 +19,8 @@ import {
   getStylesRef,
   Image,
 } from "@mantine/core";
-
-import { useDisclosure } from "@mantine/hooks";
+import { useMantineTheme } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
   IconSearch,
   IconMessage,
@@ -63,19 +63,15 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     height: "100%",
     width: "100%",
-    backgroundImage: theme.fn.linearGradient(
-      5,
-      theme.colors.blue[6],
-      theme.colors.green[6]
-    ),
+    backgroundColor: "#800080",
     color: "white",
   },
 
   burger: {
     [theme.fn.largerThan("sm")]: {
       display: "none",
-      color: "white",
     },
+    color: "white",
   },
   logo: {
     [theme.fn.smallerThan("sm")]: {
@@ -88,17 +84,15 @@ const useStyles = createStyles((theme) => ({
     },
   },
   drawer: {
-    backgroundColor: theme.fn.variant({
-      variant: "filled",
-      color: theme.primaryColor,
-    }).background,
+    [theme.fn.largerThan("sm")]: {
+      visibility: "hidden",
+    },
+    alignContent: "start",
   },
   navbar: {
-    paddingTop: 100,
-    backgroundColor: theme.fn.variant({
-      variant: "filled",
-      color: theme.primaryColor,
-    }).background,
+    padding: 10,
+    backgroundColor: "#fff",
+    color: "GrayText",
   },
   link: {
     ...theme.fn.focusStyles(),
@@ -106,17 +100,13 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     textDecoration: "none",
     fontSize: theme.fontSizes.sm,
-    color: theme.white,
     padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
     borderRadius: theme.radius.sm,
     fontWeight: 500,
 
     "&:hover": {
-      backgroundColor: theme.fn.lighten(
-        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
-          .background,
-        0.1
-      ),
+      backgroundColor: "#800080",
+      color: "white",
     },
   },
   headerIcon: {
@@ -128,21 +118,17 @@ const useStyles = createStyles((theme) => ({
 
   linkIcon: {
     ref: getStylesRef("icon"),
-    color: theme.white,
     opacity: 0.75,
     marginRight: theme.spacing.sm,
   },
 
   linkActive: {
     "&, &:hover": {
-      backgroundColor: theme.fn.lighten(
-        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
-          .background,
-        0.15
-      ),
+      backgroundColor: "#800080",
       [`& .${getStylesRef("icon")}`]: {
         opacity: 0.9,
       },
+      color: "white",
     },
   },
   footer: {
@@ -166,7 +152,8 @@ export function AppHeader() {
   };
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Home");
-
+  const mobile = useMediaQuery("(max-width: 48.25em)");
+  //const [mobile, setMobile] = useState(useMantineTheme().fn.smallerThan("sm"));
   return (
     <>
       <Header height={HEADER_HEIGHT} className={classes.root}>
@@ -237,15 +224,17 @@ export function AppHeader() {
         </Container>
       </Header>
       <Drawer
-        opened={opened}
+        opened={mobile ? opened : false}
         onClose={close}
         size={"xs"}
         transitionProps={{
-          transition: "rotate-left",
+          transition: "slide-right",
           duration: 150,
           timingFunction: "linear",
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
+        sx={{ backgroundColor: "red" }}
+        withCloseButton={false}
       >
         <Drawer.Content className={classes.drawer}>
           <Navbar className={classes.navbar}>

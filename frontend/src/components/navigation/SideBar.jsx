@@ -7,14 +7,17 @@ import { data } from "../shared/data";
 const useStyles = createStyles((theme) => ({
   navbar: {
     paddingTop: 30,
-    backgroundImage: theme.fn.linearGradient(
-      5,
-      theme.colors.green[6],
-      theme.colors.blue[6]
-    ),
+    // backgroundImage: theme.fn.linearGradient(
+    //   5,
+    //   theme.colors.green[6],
+    //   theme.colors.blue[6]
+    // ),
+
+    backgroundColor: "#fff",
     [theme.fn.smallerThan("sm")]: {
       display: "none",
     },
+    color: "GrayText",
   },
 
   version: {
@@ -53,44 +56,37 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     textDecoration: "none",
     fontSize: theme.fontSizes.sm,
-    color: theme.white,
+    color: "GrayText",
     padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
     borderRadius: theme.radius.sm,
     fontWeight: 500,
 
     "&:hover": {
-      backgroundColor: theme.fn.lighten(
-        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
-          .background,
-        0.1
-      ),
+      backgroundColor: "#800080",
+      color: "white",
     },
   },
 
   linkIcon: {
     ref: getStylesRef("icon"),
-    color: theme.white,
     opacity: 0.75,
     marginRight: theme.spacing.sm,
   },
 
   linkActive: {
     "&, &:hover": {
-      backgroundColor: theme.fn.lighten(
-        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
-          .background,
-        0.15
-      ),
+      backgroundColor: "#800080",
       [`& .${getStylesRef("icon")}`]: {
         opacity: 0.9,
       },
     },
+    color: "white",
   },
 }));
 
 export function SideBar() {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Billing");
+  const [active, setActive] = useState("Home");
 
   const links = data.map((item) => (
     <a
@@ -111,7 +107,7 @@ export function SideBar() {
 
   return (
     <Navbar height={600} width={{ sm: 300 }} p="md" className={classes.navbar}>
-      <Navbar.Section>{links}</Navbar.Section>
+      <Navbar.Section className={classes.header}>{links}</Navbar.Section>
       <Navbar.Section className={classes.footer}>
         <a
           href="/"
