@@ -1,29 +1,22 @@
 import React, { useState } from "react";
 import {
   SimpleGrid,
-  ColorInput,
   Group,
   Stack,
   useMantineTheme,
   px,
   Card,
   Text,
-  Button,
   createStyles,
   RingProgress,
-  TextInput,
-  Drawer,
-  Textarea,
 } from "@mantine/core";
-import { Calendar, DateInput, TimeInput } from "@mantine/dates";
-import { Select, Slider, Box } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Calendar } from "@mantine/dates";
+import { AddTaskForm } from "./AddTaskForm";
 import {
   IconCalendarDue,
   IconCalendarCheck,
   IconCalendarOff,
   IconHandMove,
-  IconPlus,
 } from "@tabler/icons-react";
 
 import dayjs from "dayjs";
@@ -57,17 +50,9 @@ const useStyles = createStyles((theme) => ({
 export function Dashboard({ user }) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const [date, setDate] = useState(null > "");
+
   const [selected, setSelected] = useState([]);
-  const [priority, setPriority] = useState(50);
-  const [labels, setLabels] = useState([
-    { value: "School", label: "School" },
-    { value: "Church", label: "Churck" },
-    { value: "Hangout", label: "Hangout" },
-    { value: "Work", label: "Work" },
-    { value: "Sports", label: "Sports" },
-    { value: "Jim and Workout", label: "Jim and Workout" },
-  ]);
+
   const handleSelect = (date) => {
     const isSelected = selected.some((s) => dayjs(date).isSame(s, "date"));
     if (isSelected) {
@@ -100,8 +85,7 @@ export function Dashboard({ user }) {
       status: "Completed",
     },
   ]);
-  const [modalOpen, { open, close }] = useDisclosure(false);
-  //const [opened, { open, close }] = useDisclosure(false);
+
   return (
     <div style={{ width: "100%", margin: 10 }}>
       <h3 style={{ color: "#800080" }}>
@@ -247,13 +231,7 @@ export function Dashboard({ user }) {
               }}
             >
               <h3>Upcoming Tasks</h3>
-              <Button
-                onClick={open}
-                sx={{ backgroundColor: "#800080" }}
-                leftIcon={<IconPlus />}
-              >
-                Add new task
-              </Button>
+              <AddTaskForm />
             </Group>
             {tasks.map((task, index) => {
               return (
@@ -272,107 +250,6 @@ export function Dashboard({ user }) {
           </>
         )}
       </SimpleGrid>
-      <Drawer
-        opened={modalOpen}
-        onClose={close}
-        title="Create New Task"
-        overlayProps={{
-          color:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[9]
-              : theme.colors.gray[2],
-          opacity: 0.55,
-          blur: 3,
-        }}
-        transitionProps={{
-          transition: "slide-left",
-          duration: 150,
-          timingFunction: "linear",
-        }}
-        position="right"
-        size={theme.fn.largerThan("sm") ? "sm" : "lg"}
-      >
-        <form>
-          <TextInput placeholder="Title" label="Title:" />
-          <Textarea placeholder="Title" label="Description:" />
-          <Group sx={{ width: "100%" }}>
-            <DateInput
-              value={date}
-              onChange={setDate}
-              label="Due Date"
-              placeholder="2023-20-12"
-              disallowInput
-            />
-            <TimeInput label="Due Time" />
-          </Group>
-          <ColorInput
-            disallowInput
-            label="Select color"
-            format="hex"
-            swatches={[
-              "#25262b",
-              "#868e96",
-              "#fa5252",
-              "#e64980",
-              "#be4bdb",
-              "#7950f2",
-              "#4c6ef5",
-              "#228be6",
-              "#15aabf",
-              "#12b886",
-              "#40c057",
-              "#82c91e",
-              "#fab005",
-              "#fd7e14",
-            ]}
-          />
-          <Select
-            label="Status"
-            placeholder="Select Initial"
-            data={[
-              { value: "Not Started", label: "Not Started" },
-              { value: "In Progress", label: "In Progress" },
-              { value: "Completed", label: "Completed" },
-            ]}
-          />
-          <Select
-            label="Select Categories"
-            data={labels}
-            placeholder="Select Labels"
-            nothingFound="Nothing found"
-            searchable
-            creatable
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(query) => {
-              const item = { value: query, label: query };
-              setLabels((current) => [...current, item]);
-              return item;
-            }}
-          />
-          <Box sx={{ margin: "auto" }}>
-            <Slider
-              value={priority}
-              onChange={setPriority}
-              thumbSize={30}
-              color="#800080"
-            />
-            <Text mt="xl" size="xl" fw={"bold"}>
-              {priority >= 80
-                ? "Very High"
-                : priority >= 60
-                ? "High Priority"
-                : priority > 40
-                ? "Low Priority"
-                : "Very Low Priority"}
-            </Text>
-          </Box>
-          <Button
-            sx={{ backgroundColor: "#800080", width: "100%", marginTop: 20 }}
-          >
-            Save Task
-          </Button>
-        </form>
-      </Drawer>
     </div>
   );
 }

@@ -7,7 +7,7 @@ const Task = new mongoose.Schema({
   user_id: { type: String },
   status: { type: String },
   color: { type: String },
-  lable: { type: String },
+  label: { type: String },
   priority: { type: Number },
 });
 
