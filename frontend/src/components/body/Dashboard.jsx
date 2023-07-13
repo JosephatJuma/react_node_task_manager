@@ -16,10 +16,11 @@ import {
   IconCalendarDue,
   IconCalendarCheck,
   IconCalendarOff,
+  IconHandMove,
 } from "@tabler/icons-react";
 
 const getChild = (height, component) => (
-  <Card>
+  <Card radius={"lg"}>
     <Card.Section>{component}</Card.Section>
   </Card>
 );
@@ -31,7 +32,6 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     color: "green",
-    borderWidth: 20,
 
     cursor: "pointer",
     justifyContent: "space-between",
@@ -42,11 +42,11 @@ const useStyles = createStyles((theme) => ({
     // ),
     ":hover": {
       color: "white",
-      backgroundColor: "lightgreen",
+      backgroundColor: "#800080",
     },
   },
 }));
-export function Dashboard() {
+export function Dashboard({ user }) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const [tasks, setTasks] = React.useState([
@@ -72,15 +72,20 @@ export function Dashboard() {
     },
   ]);
   return (
-    <div style={{ width: "80%", margin: 10 }}>
+    <div style={{ width: "100%", margin: 10 }}>
       <SimpleGrid cols={2} breakpoints={[{ maxWidth: "xs", cols: 1 }]}>
         <Stack>
+          <h4 style={{ color: "blue" }}>
+            Hello,
+            {user.first_name + " " + user.last_name}
+            <IconHandMove />
+          </h4>
           {getChild(
             getSubHeight(3, px(theme.spacing.md)),
             <Card
               shadow="sm"
               padding="lg"
-              radius="md"
+              radius="lg"
               withBorder
               className={classes.select}
             >
@@ -116,7 +121,7 @@ export function Dashboard() {
             <Card
               shadow="sm"
               padding="lg"
-              radius="md"
+              radius="lg"
               withBorder
               className={classes.select}
             >
@@ -152,7 +157,7 @@ export function Dashboard() {
             <Card
               shadow="sm"
               padding="lg"
-              radius="md"
+              radius="lg"
               withBorder
               className={classes.select}
             >
@@ -193,7 +198,7 @@ export function Dashboard() {
                 <Card
                   shadow="sm"
                   padding="lg"
-                  radius="md"
+                  radius="lg"
                   withBorder
                   sx={{ margin: 10 }}
                   key={index}

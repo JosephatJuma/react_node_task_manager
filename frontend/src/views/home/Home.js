@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 export default function Home() {
   const loggedIn = useSelector((state) => state.login.loggedIn);
-
+  const user = useSelector((state) => state.login.user);
   return (
     <>
       {!loggedIn ? (
@@ -17,7 +17,7 @@ export default function Home() {
           <AppHeader />
           <Flex>
             <SideBar />
-            <Dashboard />
+            <Dashboard user={user} />
           </Flex>
         </div>
       )}
