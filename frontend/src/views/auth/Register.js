@@ -85,7 +85,7 @@ function Register() {
         <form
           onSubmit={form.onSubmit(
             (values, _event) => {
-              submitData(`http://localhost:1000/v1/api/auth/register`, values);
+              submitData(`${api_url}auth/register/`, values);
             },
             (validationErrors, _values, _event) => {
               return;
