@@ -3,13 +3,13 @@ import {
   SimpleGrid,
   Group,
   Stack,
-  useMantineTheme,
   px,
   Card,
   Text,
-  createStyles,
-  RingProgress,
+  Badge,
+  Paper,
 } from "@mantine/core";
+import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { AddTaskForm } from "./AddTaskForm";
 import axios from "axios";
@@ -18,6 +18,7 @@ import {
   IconCalendarCheck,
   IconCalendarOff,
   IconHandMove,
+  IconSubtask,
 } from "@tabler/icons-react";
 
 import dayjs from "dayjs";
@@ -250,20 +251,38 @@ export function Dashboard({ user }) {
             </Group>
             {tasks.map((task, index) => {
               return (
-                <Card
+                <Paper
                   shadow="sm"
-                  padding="lg"
-                  radius="lg"
+                  padding="auto"
+                  radius="sm"
                   withBorder
                   sx={{
                     margin: 10,
                     borderColor: `${task.color}c0`,
                     borderWidth: 2,
+
+                    minHeight: 50,
                   }}
                   key={index}
                 >
-                  <Text>{task.title}</Text>
-                </Card>
+                  <Group
+                    sx={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <IconSubtask />
+                    <>
+                      <Text size={"lg"} fw={"bold"} color="#800080">
+                        {task.title}
+                      </Text>
+                      <Text> {task.description}</Text>
+                    </>
+                    <Badge>
+                      <Text>{task.status}</Text>
+                    </Badge>
+                  </Group>
+                </Paper>
               );
             })}
           </>
