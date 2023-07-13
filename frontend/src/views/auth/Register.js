@@ -19,7 +19,8 @@ function Register() {
   const form = useForm({
     initialValues: {
       email: "",
-      name: "",
+      first_name: "",
+      last_name: "",
       password: "",
       terms: true,
     },
@@ -29,7 +30,7 @@ function Register() {
         val.length <= 6
           ? "Password should include at least 6 characters"
           : null,
-      name: (val) => (val.length <= 6 ? "Name is invalid" : null),
+      last_name: (val) => (val.length <= 6 ? "Name is invalid" : null),
     },
   });
 
@@ -57,7 +58,7 @@ function Register() {
               <TextInput
                 label="First Name"
                 placeholder="Your name"
-                value={form.values.name}
+                value={form.values.first_name}
                 onChange={(event) =>
                   form.setFieldValue("name", event.currentTarget.value)
                 }
@@ -66,7 +67,7 @@ function Register() {
               <TextInput
                 label="Last Name"
                 placeholder="Your name"
-                value={form.values.name}
+                value={form.values.last_name}
                 onChange={(event) =>
                   form.setFieldValue("name", event.currentTarget.value)
                 }

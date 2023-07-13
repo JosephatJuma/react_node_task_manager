@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../state/reducers/loginSlice";
-import { Navigate } from "react-router-dom";
 function useLogin() {
   const dispatch = useDispatch();
 
