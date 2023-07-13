@@ -25,12 +25,14 @@ exports.login = async (req, res) => {
   if (user) {
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) {
-      res.status(500).send("Wrong Password!");
+      res.status(200).send({ message: "Wrong Password!", success: false });
     } else {
       //req.session.user = user;
-      res.status(200).send("Login successfull!");
+      res
+        .status(200)
+        .send({ message: "Login successfull!", success: true, user: user });
     }
   } else {
-    res.status(500).send("Wrong Email Provided!");
+    res.status(200).send({ message: "Wrong Email Provided!", success: false });
   }
 };
