@@ -1,16 +1,6 @@
-import React, { useState, useEffect } from "react";
-import {
-  SimpleGrid,
-  Group,
-  Stack,
-  px,
-  Button,
-  Chip,
-  Popover,
-  ActionIcon,
-  Tooltip,
-  Modal,
-} from "@mantine/core";
+import React, { useEffect } from "react";
+import { SimpleGrid, Group, Stack, px, Chip } from "@mantine/core";
+import { Popover, ActionIcon, Tooltip } from "@mantine/core";
 import { Card, Text, Badge, Paper, Tabs, rem } from "@mantine/core";
 import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
@@ -26,11 +16,12 @@ import {
   IconTrash,
   IconEditCircle,
   IconEye,
+  IconLayoutKanban,
 } from "@tabler/icons-react";
-import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
+
 const getChild = (height, component) => (
-  <Card radius={"lg"} shadow="md">
+  <Card radius={"lg"} shadow="md" sx={{ maxHeight: 500 }}>
     <Card.Section>{component}</Card.Section>
   </Card>
 );
@@ -63,8 +54,6 @@ const useStyles = createStyles((theme) => ({
   title: { color: "#800080", fontWeight: "bold", fontSize: 18 },
 }));
 export function Dashboard({ user }) {
-  const [opened, { open, close }] = useDisclosure(false); //for the model
-  const [allowDel, setAllowDel] = useState(false);
   const api_url = process.env.REACT_APP_API_URL;
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -119,17 +108,17 @@ export function Dashboard({ user }) {
 
   //filter tasks for today
   const today = new Date();
-
   const tasksToday = tasks.filter((task) => {
     const taskDate = new Date(task.due_date);
     return taskDate.toDateString() === today.toDateString();
   });
+
   //get dates that have tasks on them
   const dates = tasks.map((task) => task.due_date);
 
   //get tasks of status -Completetd
   const tasksCompleted = tasks.filter((task) => {
-    return task.status === "Complted";
+    return task.status === "Completed";
   });
 
   //get tasks of status -not startd
@@ -261,7 +250,7 @@ export function Dashboard({ user }) {
               <AddTaskForm />
             </Group>
             <Tabs
-              defaultValue="today"
+              defaultValue="all"
               unstyled
               styles={(theme) => ({
                 tab: {
@@ -322,11 +311,68 @@ export function Dashboard({ user }) {
               })}
             >
               <Tabs.List>
+                <Tabs.Tab value="all">All</Tabs.Tab>
                 <Tabs.Tab value="today">Tasks today</Tabs.Tab>
                 <Tabs.Tab value="not started">Upcoming</Tabs.Tab>
                 <Tabs.Tab value="completed">Completed</Tabs.Tab>
               </Tabs.List>
-
+              <Tabs.Panel value="all" pt="xs">
+                {tasks.length > 0 ? (
+                  tasks.map((task, index) => {
+                    return (
+                      <Paper
+                        shadow="sm"
+                        padding="auto"
+                        radius="lg"
+                        withBorder
+                        className={classes.task}
+                        key={index}
+                      >
+                        <Group className={classes.taskGroup}>
+                          <IconLayoutKanban />
+                          <Text size={"lg"} fw={"bold"} color="#800080">
+                            {task.title}
+                          </Text>
+                        </Group>
+                        <Group className={classes.taskGroup}>
+                          <Popover withArrow>
+                            <Popover.Target>
+                              <Chip checked={false}>
+                                <IconDots />
+                              </Chip>
+                            </Popover.Target>
+                            <Popover.Dropdown>
+                              <Text>Actions</Text>
+                              <Tooltip label="View Task">
+                                <ActionIcon>
+                                  <IconEye size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Edit Task">
+                                <ActionIcon>
+                                  <IconEditCircle size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Delete Task">
+                                <ActionIcon
+                                  onClick={() => deleteTask(task._id)}
+                                >
+                                  <IconTrash size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                            </Popover.Dropdown>
+                          </Popover>
+                          <Badge>
+                            <Text>{task.status}</Text>
+                          </Badge>
+                        </Group>
+                      </Paper>
+                    );
+                  })
+                ) : (
+                  <Text className={classes.title}>You have no tasks today</Text>
+                )}
+              </Tabs.Panel>
               <Tabs.Panel value="today" pt="xs">
                 {tasksToday.length > 0 ? (
                   tasksToday.map((task, index) => {
@@ -340,7 +386,7 @@ export function Dashboard({ user }) {
                         key={index}
                       >
                         <Group className={classes.taskGroup}>
-                          <IconSubtask />
+                          <IconLayoutKanban />
                           <Text size={"lg"} fw={"bold"} color="#800080">
                             {task.title}
                           </Text>
@@ -398,7 +444,7 @@ export function Dashboard({ user }) {
                         key={index}
                       >
                         <Group className={classes.taskGroup}>
-                          <IconSubtask />
+                          <IconLayoutKanban />
                           <Text size={"lg"} fw={"bold"} color="#800080">
                             {task.title}
                           </Text>
@@ -458,7 +504,7 @@ export function Dashboard({ user }) {
                         key={index}
                       >
                         <Group className={classes.taskGroup}>
-                          <IconSubtask />
+                          <IconLayoutKanban />
                           <Text size={"lg"} fw={"bold"} color="#800080">
                             {task.title}
                           </Text>
@@ -513,20 +559,13 @@ export function Dashboard({ user }) {
                 getDayProps={(day) => ({
                   selected: dates.some((s) => dayjs(day).isSame(s, "date")),
                 })}
+                color="red"
                 sx={{ "::selection": { backgroundColor: "#800080" } }}
               />
             </Group>
           </>
         )}
       </SimpleGrid>
-
-      {/* Delete Action Model */}
-      {/* <Modal opened={opened} onClose={close} title="Authentication" centered>
-        <Text>Are you sure you want do delete thias Task</Text>
-        <Button leftIcon={<IconTrash />} onClick={() => setAllowDel(true)}>
-          Delete
-        </Button>
-      </Modal> */}
     </div>
   );
 }
