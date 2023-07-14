@@ -349,7 +349,7 @@ export function Dashboard({ user }) {
                               <Tooltip label="View Task">
                                 <ActionIcon
                                   component={Link}
-                                  to={"/tasks/view"}
+                                  to={`/tasks/view?task=${task._id}`}
                                   onClick={() => dispatch(view(task))}
                                 >
                                   <IconEye size={14} />
@@ -408,7 +408,11 @@ export function Dashboard({ user }) {
                             <Popover.Dropdown>
                               <Text>Actions</Text>
                               <Tooltip label="View Task">
-                                <ActionIcon>
+                                <ActionIcon
+                                  component={Link}
+                                  to={`/tasks/view?task=${task._id}`}
+                                  onClick={() => dispatch(view(task))}
+                                >
                                   <IconEye size={14} />
                                 </ActionIcon>
                               </Tooltip>
@@ -466,7 +470,11 @@ export function Dashboard({ user }) {
                             <Popover.Dropdown>
                               <Text>Actions</Text>
                               <Tooltip label="View Task">
-                                <ActionIcon>
+                                <ActionIcon
+                                  component={Link}
+                                  to={`/tasks/view?task=${task._id}`}
+                                  onClick={() => dispatch(view(task))}
+                                >
                                   <IconEye size={14} />
                                 </ActionIcon>
                               </Tooltip>
@@ -526,7 +534,11 @@ export function Dashboard({ user }) {
                             <Popover.Dropdown>
                               <Text>Actions</Text>
                               <Tooltip label="View Task">
-                                <ActionIcon>
+                                <ActionIcon
+                                  component={Link}
+                                  to={`/tasks/view?task=${task._id}`}
+                                  onClick={() => dispatch(view(task))}
+                                >
                                   <IconEye size={14} />
                                 </ActionIcon>
                               </Tooltip>

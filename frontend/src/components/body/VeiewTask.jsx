@@ -10,7 +10,15 @@ import {
   createStyles,
 } from "@mantine/core";
 
-import { IconEdit, IconHeart, IconTrash, IconX } from "@tabler/icons-react";
+import {
+  IconArrowBack,
+  IconCalendar,
+  IconClock,
+  IconEdit,
+  IconHeart,
+  IconTrash,
+  IconX,
+} from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -46,18 +54,33 @@ function VeiewTask() {
   const { classes, theme } = useStyles();
 
   const task = useSelector((state) => state.view.task);
+
   return (
     <div>
       <ActionIcon
-        sx={{ position: { top: 20, right: 20 } }}
         component={Link}
         to={"/"}
+        sx={{
+          backgroundColor: task.color,
+          color: "white",
+          margin: 20,
+          ":hover": { backgroundColor: "black" },
+        }}
       >
-        <IconX />
+        <IconArrowBack size={40} />
       </ActionIcon>
       <Card withBorder radius="md" p="md" className={classes.card} shadow="lg">
         <Card.Section>
-          <Card height={180} sx={{ backgroundColor: task.color }}>
+          <Card
+            height={180}
+            sx={{
+              backgroundImage: theme.fn.linearGradient(
+                5,
+                task.color,
+                theme.colors.blue[6]
+              ),
+            }}
+          >
             <Title color="white">{task.title}</Title>
           </Card>
         </Card.Section>
@@ -72,11 +95,19 @@ function VeiewTask() {
           <Text fz="sm" mt="xs">
             {task.description}
           </Text>
+          <Group>
+            <IconCalendar color={task.color} />
+            <Text>{new Date(task.due_date).toDateString()}</Text>
+          </Group>
+          <Group>
+            <IconClock color={task.color} />
+            <Text>{task.due_time}</Text>
+          </Group>
         </Card.Section>
 
         <Card.Section className={classes.section}>
           <Text mt="md" className={classes.label} c="dimmed">
-            Perfect for you, if you enjoy
+            {task.label}
           </Text>
 
           <Text c="dimmed" fz="sm" mt="md">
@@ -88,7 +119,7 @@ function VeiewTask() {
                 color: theme.colorScheme === "dark" ? theme.white : theme.black,
               })}
             >
-              {task.priority}
+              {task.priority}%
             </Text>
           </Text>
           <Progress value={task.priority} color={task.color} />
