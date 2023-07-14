@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { ColorInput, Group, Text, Button } from "@mantine/core";
+import { ColorInput, Group, Text, Button, Dialog, Tabs } from "@mantine/core";
 import { TextInput, Drawer, Textarea, Notification } from "@mantine/core";
 import { DateInput, TimeInput } from "@mantine/dates";
 import { Select, Slider, Box, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconPlus, IconX } from "@tabler/icons-react";
+import { IconPlus, IconX, IconCheck } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 export function AddTaskForm() {
@@ -30,12 +30,13 @@ export function AddTaskForm() {
   ]);
 
   const [modalOpen, { open, close }] = useDisclosure(false);
-  const [err, setErr] = useState("");
-  const clearErr = () => {
-    setErr("");
+  const [message, setMessage] = useState("");
+  const [success, setSucess] = useState(false);
+  const clearMessage = () => {
+    setMessage("");
   };
   const submitTask = async () => {
-    clearErr();
+    clearMessage();
     const task = {
       priority: priority,
       user_id: user._id,
@@ -50,23 +51,43 @@ export function AddTaskForm() {
     console.log(task);
     try {
       const response = await axios.post(`${api_url}/tasks/${user._id}`, task);
-      setErr(response.data.message);
+      setMessage(response.data.message);
       if (response.data.success === true) {
-        close();
+        setSucess(true);
       }
     } catch (error) {
-      setErr(error.message);
+      setMessage(error.message);
+      setSucess(false);
     }
+    close();
   };
 
   return (
     <>
+      {message && (
+        <Dialog
+          opened={message}
+          onClose={clearMessage}
+          withCloseButton
+          size="lg"
+          radius="md"
+          shadow="xl"
+          sx={{ backgroundColor: success ? "green" : "black", color: "white" }}
+          transitionTimingFunction="ease"
+        >
+          <Group>
+            {success ? <IconCheck size="1.1rem" /> : <IconX size="1.1rem" />}
+            <Text>{message}</Text>
+          </Group>
+        </Dialog>
+      )}
+
       <Button
         onClick={open}
         sx={{ backgroundColor: "#800080" }}
         leftIcon={<IconPlus />}
       >
-        Add new task
+        Add
       </Button>
       <Drawer
         opened={modalOpen}
@@ -88,19 +109,6 @@ export function AddTaskForm() {
         position="right"
         size={theme.fn.largerThan("sm") ? "sm" : "lg"}
       >
-        {err && (
-          <Notification
-            icon={<IconX size="1.1rem" />}
-            color="red"
-            onClose={clearErr}
-            withCloseButton
-            size="lg"
-            radius="md"
-            shadow="xl"
-          >
-            <Text>{err}</Text>
-          </Notification>
-        )}
         <form>
           <TextInput
             placeholder="Title"
