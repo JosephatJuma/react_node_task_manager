@@ -5,20 +5,23 @@ import { Card, Text, Badge, Paper, Tabs, rem } from "@mantine/core";
 import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { AddTaskForm } from "./AddTaskForm";
+import { modals } from "@mantine/modals";
 import axios from "axios";
 import {
   IconCalendarDue,
   IconCalendarCheck,
   IconCalendarOff,
   IconHandMove,
-  IconSubtask,
   IconDots,
   IconTrash,
   IconEditCircle,
   IconEye,
   IconLayoutKanban,
 } from "@tabler/icons-react";
+import { useDispatch } from "react-redux";
+import { view } from "../../state/reducers/viewTaskSlice";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 const getChild = (height, component) => (
   <Card radius={"lg"} shadow="md" sx={{ maxHeight: 500 }}>
@@ -57,7 +60,7 @@ export function Dashboard({ user }) {
   const api_url = process.env.REACT_APP_API_URL;
   const { classes } = useStyles();
   const theme = useMantineTheme();
-
+  const dispatch = useDispatch();
   const [tasks, setTasks] = React.useState([
     {
       title: "Write a blog post",
@@ -344,7 +347,11 @@ export function Dashboard({ user }) {
                             <Popover.Dropdown>
                               <Text>Actions</Text>
                               <Tooltip label="View Task">
-                                <ActionIcon>
+                                <ActionIcon
+                                  component={Link}
+                                  to={"/tasks/view"}
+                                  onClick={() => dispatch(view(task))}
+                                >
                                   <IconEye size={14} />
                                 </ActionIcon>
                               </Tooltip>
