@@ -8,6 +8,9 @@ import {
   Text,
   Badge,
   Paper,
+  Tabs,
+  TabsProps,
+  rem,
 } from "@mantine/core";
 import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
@@ -37,34 +40,29 @@ const useStyles = createStyles((theme) => ({
     color: "green",
     cursor: "pointer",
     justifyContent: "space-between",
-    // backgroundImage: theme.fn.linearGradient(
-    //   1,
-    //   theme.colors.blue[6],
-    //   theme.colors.green[6]
-    // ),
     ":hover": {
       color: "white",
       backgroundColor: "#800080",
     },
   },
+  task: {
+    margin: 10,
+    borderWidth: 2,
+    padding: 20,
+    minHeight: 50,
+    ":hover": { backgroundColor: "gold" },
+  },
+  taskGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  title: { color: "#800080", fontWeight: "bold", fontSize: 18 },
 }));
 export function Dashboard({ user }) {
   const api_url = process.env.REACT_APP_API_URL;
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  const [selected, setSelected] = useState([]);
-
-  const handleSelect = (date) => {
-    const isSelected = selected.some((s) => dayjs(date).isSame(s, "date"));
-    if (isSelected) {
-      setSelected((current) =>
-        current.filter((d) => !dayjs(d).isSame(date, "date"))
-      );
-    } else {
-      setSelected((current) => [...current, date]);
-    }
-  };
   const [tasks, setTasks] = React.useState([
     {
       title: "Write a blog post",
@@ -87,10 +85,10 @@ export function Dashboard({ user }) {
       status: "Completed",
     },
   ]);
+
   const fetchTasks = async () => {
     try {
       const response = await axios.get(`${api_url}tasks/${user._id}`);
-
       setTasks(response.data.tasks);
     } catch (error) {
       console.log(error.message);
@@ -99,6 +97,27 @@ export function Dashboard({ user }) {
   useEffect(() => {
     fetchTasks();
   });
+
+  //filter tasks for today
+  const today = new Date();
+
+  const tasksToday = tasks.filter((task) => {
+    const taskDate = new Date(task.due_date);
+    return taskDate.toDateString() === today.toDateString();
+  });
+  //get dates that have tasks on them
+  const dates = tasks.map((task) => task.due_date);
+
+  //get tasks of status -Completetd
+  const tasksCompleted = tasks.filter((task) => {
+    return task.status === "Complted";
+  });
+
+  //get tasks of status -not startd
+  const tasksNotStarted = tasks.filter((task) => {
+    return task.status === "Not Started";
+  });
+
   return (
     <div style={{ width: "100%", margin: 10 }}>
       <h3 style={{ color: "#800080" }}>
@@ -219,25 +238,7 @@ export function Dashboard({ user }) {
               />
             </Card>
           )}
-        </Stack>
-        {getChild(
-          BASE_HEIGHT,
-          <>
-            <Group position="center">
-              <Calendar
-                getDayProps={(date) => ({
-                  selected: selected.some((s) => dayjs(date).isSame(s, "date")),
-                  onClick: () => handleSelect(date),
-                })}
-                styles={{
-                  calendarHeader: { color: "#800080" },
-                  calendar: {
-                    color: "#800080",
-                  },
-                }}
-              />
-              {/* <DatePicker value={date} onChange={setDate} /> */}
-            </Group>
+          <Card radius={"lg"}>
             <Group
               display={"flex"}
               sx={{
@@ -246,45 +247,178 @@ export function Dashboard({ user }) {
                 alignSelf: "center",
               }}
             >
-              <h3>Upcoming Tasks</h3>
+              <h3>Tasks</h3>
               <AddTaskForm />
             </Group>
-            {tasks.map((task, index) => {
-              return (
-                <Paper
-                  shadow="sm"
-                  padding="auto"
-                  radius="sm"
-                  withBorder
-                  sx={{
-                    margin: 10,
-                    borderColor: `${task.color}c0`,
-                    borderWidth: 2,
+            <Tabs
+              defaultValue="today"
+              unstyled
+              styles={(theme) => ({
+                tab: {
+                  ...theme.fn.focusStyles(),
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : theme.white,
+                  color:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[0]
+                      : theme.colors.gray[9],
+                  border: `${rem(1)} solid ${
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[4]
+                  }`,
+                  padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+                  cursor: "pointer",
+                  fontSize: theme.fontSizes.sm,
+                  display: "flex",
+                  alignItems: "center",
 
-                    minHeight: 50,
-                  }}
-                  key={index}
-                >
-                  <Group
-                    sx={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <IconSubtask />
-                    <>
-                      <Text size={"lg"} fw={"bold"} color="#800080">
-                        {task.title}
-                      </Text>
-                      <Text> {task.description}</Text>
-                    </>
-                    <Badge>
-                      <Text>{task.status}</Text>
-                    </Badge>
-                  </Group>
-                </Paper>
-              );
-            })}
+                  "&:disabled": {
+                    opacity: 0.5,
+                    cursor: "not-allowed",
+                  },
+
+                  "&:not(:first-of-type)": {
+                    borderLeft: 0,
+                  },
+
+                  "&:first-of-type": {
+                    borderTopLeftRadius: theme.radius.md,
+                    borderBottomLeftRadius: theme.radius.md,
+                  },
+
+                  "&:last-of-type": {
+                    borderTopRightRadius: theme.radius.md,
+                    borderBottomRightRadius: theme.radius.md,
+                  },
+
+                  "&[data-active]": {
+                    backgroundColor: "#800080",
+                    borderColor: theme.colors.blue[7],
+                    color: theme.white,
+                  },
+                },
+                tabIcon: {
+                  marginRight: theme.spacing.xs,
+                  display: "flex",
+                  alignItems: "center",
+                },
+
+                tabsList: {
+                  display: "flex",
+                },
+              })}
+            >
+              <Tabs.List>
+                <Tabs.Tab value="today">Tasks today</Tabs.Tab>
+                <Tabs.Tab value="not started">Upcoming</Tabs.Tab>
+                <Tabs.Tab value="completed">Completed</Tabs.Tab>
+              </Tabs.List>
+
+              <Tabs.Panel value="today" pt="xs">
+                {tasksToday.length > 0 ? (
+                  tasksToday.map((task, index) => {
+                    return (
+                      <Paper
+                        shadow="sm"
+                        padding="auto"
+                        radius="lg"
+                        withBorder
+                        className={classes.task}
+                        key={index}
+                      >
+                        <Group className={classes.taskGroup}>
+                          <IconSubtask />
+                          <Text size={"lg"} fw={"bold"} color="#800080">
+                            {task.title}
+                          </Text>
+                          <Badge>
+                            <Text>{task.status}</Text>
+                          </Badge>
+                        </Group>
+                      </Paper>
+                    );
+                  })
+                ) : (
+                  <Text className={classes.title}>You have no tasks today</Text>
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value="not started" pt="xs">
+                {tasksNotStarted.length > 0 ? (
+                  tasksNotStarted.map((task, index) => {
+                    return (
+                      <Paper
+                        shadow="sm"
+                        padding="auto"
+                        radius="lg"
+                        withBorder
+                        className={classes.task}
+                        key={index}
+                      >
+                        <Group className={classes.taskGroup}>
+                          <IconSubtask />
+                          <Text size={"lg"} fw={"bold"} color="#800080">
+                            {task.title}
+                          </Text>
+                          <Badge>
+                            <Text>{task.status}</Text>
+                          </Badge>
+                        </Group>
+                      </Paper>
+                    );
+                  })
+                ) : (
+                  <Text className={classes.title}>
+                    There are no upcming tasks
+                  </Text>
+                )}
+              </Tabs.Panel>
+
+              <Tabs.Panel value="completed" pt="xs">
+                {tasksCompleted.length > 0 ? (
+                  tasksCompleted.map((task, index) => {
+                    return (
+                      <Paper
+                        shadow="sm"
+                        padding="auto"
+                        radius="lg"
+                        withBorder
+                        className={classes.task}
+                        key={index}
+                      >
+                        <Group className={classes.taskGroup}>
+                          <IconSubtask />
+                          <Text size={"lg"} fw={"bold"} color="#800080">
+                            {task.title}
+                          </Text>
+                          <Badge>
+                            <Text>{task.status}</Text>
+                          </Badge>
+                        </Group>
+                      </Paper>
+                    );
+                  })
+                ) : (
+                  <Text className={classes.title}>There are no completed</Text>
+                )}
+              </Tabs.Panel>
+            </Tabs>
+          </Card>
+        </Stack>
+        {getChild(
+          BASE_HEIGHT,
+          <>
+            <Group position="center">
+              <Calendar
+                getDayProps={(day) => ({
+                  selected: dates.some((s) => dayjs(day).isSame(s, "date")),
+                })}
+                sx={{ "::selection": { backgroundColor: "#800080" } }}
+              />
+            </Group>
           </>
         )}
       </SimpleGrid>
