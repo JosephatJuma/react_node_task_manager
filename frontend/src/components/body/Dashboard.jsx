@@ -4,14 +4,14 @@ import {
   Group,
   Stack,
   px,
-  Card,
-  Text,
-  Badge,
-  Paper,
-  Tabs,
-  TabsProps,
-  rem,
+  Button,
+  Chip,
+  Popover,
+  ActionIcon,
+  Tooltip,
+  Modal,
 } from "@mantine/core";
+import { Card, Text, Badge, Paper, Tabs, rem } from "@mantine/core";
 import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { AddTaskForm } from "./AddTaskForm";
@@ -22,8 +22,12 @@ import {
   IconCalendarOff,
   IconHandMove,
   IconSubtask,
+  IconDots,
+  IconTrash,
+  IconEditCircle,
+  IconEye,
 } from "@tabler/icons-react";
-
+import { useDisclosure } from "@mantine/hooks";
 import dayjs from "dayjs";
 const getChild = (height, component) => (
   <Card radius={"lg"} shadow="md">
@@ -59,6 +63,8 @@ const useStyles = createStyles((theme) => ({
   title: { color: "#800080", fontWeight: "bold", fontSize: 18 },
 }));
 export function Dashboard({ user }) {
+  const [opened, { open, close }] = useDisclosure(false); //for the model
+  const [allowDel, setAllowDel] = useState(false);
   const api_url = process.env.REACT_APP_API_URL;
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -86,6 +92,7 @@ export function Dashboard({ user }) {
     },
   ]);
 
+  //fetch user tasks
   const fetchTasks = async () => {
     try {
       const response = await axios.get(`${api_url}tasks/${user._id}`);
@@ -97,6 +104,18 @@ export function Dashboard({ user }) {
   useEffect(() => {
     fetchTasks();
   });
+
+  //send a task delete request
+  const deleteTask = async (taskId) => {
+    try {
+      const del = await axios.delete(`${api_url}tasks/${taskId}`);
+      if (del.data) {
+        console.log(del.data);
+      }
+    } catch (error) {
+      console.log("Error occured");
+    }
+  };
 
   //filter tasks for today
   const today = new Date();
@@ -325,6 +344,35 @@ export function Dashboard({ user }) {
                           <Text size={"lg"} fw={"bold"} color="#800080">
                             {task.title}
                           </Text>
+                        </Group>
+                        <Group className={classes.taskGroup}>
+                          <Popover withArrow>
+                            <Popover.Target>
+                              <Chip checked={false}>
+                                <IconDots />
+                              </Chip>
+                            </Popover.Target>
+                            <Popover.Dropdown>
+                              <Text>Actions</Text>
+                              <Tooltip label="View Task">
+                                <ActionIcon>
+                                  <IconEye size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Edit Task">
+                                <ActionIcon>
+                                  <IconEditCircle size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Delete Task">
+                                <ActionIcon
+                                  onClick={() => deleteTask(task._id)}
+                                >
+                                  <IconTrash size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                            </Popover.Dropdown>
+                          </Popover>
                           <Badge>
                             <Text>{task.status}</Text>
                           </Badge>
@@ -354,6 +402,35 @@ export function Dashboard({ user }) {
                           <Text size={"lg"} fw={"bold"} color="#800080">
                             {task.title}
                           </Text>
+                        </Group>
+                        <Group className={classes.taskGroup}>
+                          <Popover withArrow>
+                            <Popover.Target>
+                              <Chip checked={false}>
+                                <IconDots />
+                              </Chip>
+                            </Popover.Target>
+                            <Popover.Dropdown>
+                              <Text>Actions</Text>
+                              <Tooltip label="View Task">
+                                <ActionIcon>
+                                  <IconEye size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Edit Task">
+                                <ActionIcon>
+                                  <IconEditCircle size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Delete Task">
+                                <ActionIcon
+                                  onClick={() => deleteTask(task._id)}
+                                >
+                                  <IconTrash size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                            </Popover.Dropdown>
+                          </Popover>
                           <Badge>
                             <Text>{task.status}</Text>
                           </Badge>
@@ -385,6 +462,35 @@ export function Dashboard({ user }) {
                           <Text size={"lg"} fw={"bold"} color="#800080">
                             {task.title}
                           </Text>
+                        </Group>
+                        <Group className={classes.taskGroup}>
+                          <Popover withArrow>
+                            <Popover.Target>
+                              <Chip checked={false}>
+                                <IconDots />
+                              </Chip>
+                            </Popover.Target>
+                            <Popover.Dropdown>
+                              <Text>Actions</Text>
+                              <Tooltip label="View Task">
+                                <ActionIcon>
+                                  <IconEye size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Edit Task">
+                                <ActionIcon>
+                                  <IconEditCircle size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                              <Tooltip label="Delete Task">
+                                <ActionIcon
+                                  onClick={() => deleteTask(task._id)}
+                                >
+                                  <IconTrash size={14} />
+                                </ActionIcon>
+                              </Tooltip>
+                            </Popover.Dropdown>
+                          </Popover>
                           <Badge>
                             <Text>{task.status}</Text>
                           </Badge>
@@ -413,6 +519,14 @@ export function Dashboard({ user }) {
           </>
         )}
       </SimpleGrid>
+
+      {/* Delete Action Model */}
+      {/* <Modal opened={opened} onClose={close} title="Authentication" centered>
+        <Text>Are you sure you want do delete thias Task</Text>
+        <Button leftIcon={<IconTrash />} onClick={() => setAllowDel(true)}>
+          Delete
+        </Button>
+      </Modal> */}
     </div>
   );
 }
