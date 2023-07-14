@@ -140,7 +140,7 @@ export function Dashboard({ user }) {
               className={classes.select}
             >
               <>
-                <IconCalendarDue />
+                <IconCalendarDue size={50} />
                 <h4>Due Today</h4>
               </>
               <RingProgress
@@ -149,17 +149,14 @@ export function Dashboard({ user }) {
                 size={90}
                 sections={[
                   {
-                    value: (20 / 100) * 100,
-                    color: theme.primaryColor,
+                    value: (tasksToday.length / tasks.length) * 100,
+                    color: "gold",
                   },
                 ]}
                 label={
                   <div>
                     <Text ta="center" fz="lg" className={classes.label}>
-                      {((20 / 100) * 100).toFixed(0)}%
-                    </Text>
-                    <Text ta="center" fz="xs" c="dimmed">
-                      Due
+                      {((tasksToday.length / tasks.length) * 100).toFixed(0)}%
                     </Text>
                   </div>
                 }
@@ -176,7 +173,7 @@ export function Dashboard({ user }) {
               className={classes.select}
             >
               <>
-                <IconCalendarCheck />
+                <IconCalendarCheck size={50} />
                 <h4>Completed Today</h4>
               </>
               <RingProgress
@@ -186,16 +183,13 @@ export function Dashboard({ user }) {
                 sections={[
                   {
                     value: (80 / 100) * 100,
-                    color: theme.primaryColor,
+                    color: "gold",
                   },
                 ]}
                 label={
                   <div>
                     <Text ta="center" fz="lg" className={classes.label}>
                       {((80 / 100) * 100).toFixed(0)}%
-                    </Text>
-                    <Text ta="center" fz="xs" c="dimmed">
-                      Completed
                     </Text>
                   </div>
                 }
@@ -212,7 +206,7 @@ export function Dashboard({ user }) {
               className={classes.select}
             >
               <>
-                <IconCalendarOff />
+                <IconCalendarOff size={50} />
                 <h4>Over due</h4>
               </>
               <RingProgress
@@ -222,16 +216,13 @@ export function Dashboard({ user }) {
                 sections={[
                   {
                     value: (1 / 100) * 100,
-                    color: theme.primaryColor,
+                    color: "gold",
                   },
                 ]}
                 label={
                   <div>
                     <Text ta="center" fz="lg" className={classes.label}>
                       {((1 / 100) * 100).toFixed(0)}%
-                    </Text>
-                    <Text ta="center" fz="xs" c="dimmed">
-                      Over due
                     </Text>
                   </div>
                 }
