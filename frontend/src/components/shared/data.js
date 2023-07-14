@@ -8,11 +8,11 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react";
 export const data = [
-  { link: "", label: "Home", icon: IconDashboard },
-  { link: "", label: "Add Task", icon: IconPlus },
-  { link: "", label: "Completed Tasks", icon: IconListCheck },
-  { link: "", label: "Upcomming Tasks", icon: IconListDetails },
-  { link: "", label: "My Teams", icon: IconUsersGroup },
-  { link: "", label: "Invitations", icon: IconAlertCircle },
-  { link: "", label: "Settings", icon: IconSettings },
+  { link: "/", label: "Home", icon: IconDashboard },
+  { link: "/tasks/add", label: "Add Task", icon: IconPlus },
+  { link: "/tasks/completed", label: "Completed Tasks", icon: IconListCheck },
+  { link: "/tasks/upcoming", label: "Upcomming Tasks", icon: IconListDetails },
+  { link: "/teams", label: "My Teams", icon: IconUsersGroup },
+  { link: "/invitations", label: "Invitations", icon: IconAlertCircle },
+  { link: "/settings", label: "Settings", icon: IconSettings },
 ];
