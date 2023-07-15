@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { ColorInput, Group, Text, Button, Dialog, Tabs } from "@mantine/core";
+import {
+  ColorInput,
+  Group,
+  Text,
+  Button,
+  Dialog,
+  Tabs,
+  Card,
+} from "@mantine/core";
 import { TextInput, Drawer, Textarea, Notification } from "@mantine/core";
 import { DateInput, TimeInput } from "@mantine/dates";
 import { Select, Slider, Box, useMantineTheme } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+
 import { IconPlus, IconX, IconCheck } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 export function AddTaskForm() {
   const api_url = process.env.REACT_APP_API_URL;
   const user = useSelector((state) => state.login.user);
-  const theme = useMantineTheme();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(null > "");
@@ -29,7 +37,6 @@ export function AddTaskForm() {
     { value: "Jim and Workout", label: "Jim and Workout" },
   ]);
 
-  const [modalOpen, { open, close }] = useDisclosure(false);
   const [message, setMessage] = useState("");
   const [success, setSucess] = useState(false);
   const clearMessage = () => {
@@ -59,7 +66,6 @@ export function AddTaskForm() {
       setMessage(error.message);
       setSucess(false);
     }
-    close();
   };
 
   return (
@@ -82,33 +88,7 @@ export function AddTaskForm() {
         </Dialog>
       )}
 
-      <Button
-        onClick={open}
-        sx={{ backgroundColor: "#800080" }}
-        leftIcon={<IconPlus />}
-      >
-        Add
-      </Button>
-      <Drawer
-        opened={modalOpen}
-        onClose={close}
-        title="Create New Task"
-        overlayProps={{
-          color:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[9]
-              : theme.colors.gray[2],
-          opacity: 0.55,
-          blur: 3,
-        }}
-        transitionProps={{
-          transition: "slide-left",
-          duration: 150,
-          timingFunction: "linear",
-        }}
-        position="right"
-        size={theme.fn.largerThan("sm") ? "sm" : "lg"}
-      >
+      <Card sx={{ width: "100%", margin: 20 }} shadow="lg" radius={"lg"}>
         <form>
           <TextInput
             placeholder="Title"
@@ -135,54 +115,56 @@ export function AddTaskForm() {
               onChange={(e) => setTime(e.target.value)}
               value={time}
             />
+            <ColorInput
+              disallowInput
+              label="Select color"
+              format="hex"
+              swatches={[
+                "#25262b",
+                "#868e96",
+                "#fa5252",
+                "#e64980",
+                "#be4bdb",
+                "#7950f2",
+                "#4c6ef5",
+                "#228be6",
+                "#15aabf",
+                "#12b886",
+                "#40c057",
+                "#82c91e",
+                "#fab005",
+                "#fd7e14",
+              ]}
+              onChange={setColor}
+            />
           </Group>
-          <ColorInput
-            disallowInput
-            label="Select color"
-            format="hex"
-            swatches={[
-              "#25262b",
-              "#868e96",
-              "#fa5252",
-              "#e64980",
-              "#be4bdb",
-              "#7950f2",
-              "#4c6ef5",
-              "#228be6",
-              "#15aabf",
-              "#12b886",
-              "#40c057",
-              "#82c91e",
-              "#fab005",
-              "#fd7e14",
-            ]}
-            onChange={setColor}
-          />
-          <Select
-            label="Status"
-            placeholder="Select Initial"
-            data={[
-              { value: "Not Started", label: "Not Started" },
-              { value: "In Progress", label: "In Progress" },
-              { value: "Completed", label: "Completed" },
-            ]}
-            onChange={setStatus}
-          />
-          <Select
-            label="Select Categories"
-            data={labels}
-            placeholder="Select Labels"
-            nothingFound="Nothing found"
-            searchable
-            creatable
-            getCreateLabel={(query) => `+ Create ${query}`}
-            onCreate={(query) => {
-              const item = { value: query, label: query };
-              setLabels((current) => [...current, item]);
-              return item;
-            }}
-            onChange={setLabel}
-          />
+          <Group>
+            <Select
+              label="Status"
+              placeholder="Select Initial"
+              data={[
+                { value: "Not Started", label: "Not Started" },
+                { value: "In Progress", label: "In Progress" },
+                { value: "Completed", label: "Completed" },
+              ]}
+              onChange={setStatus}
+            />
+            <Select
+              label="Select Categories"
+              data={labels}
+              placeholder="Select Labels"
+              nothingFound="Nothing found"
+              searchable
+              creatable
+              getCreateLabel={(query) => `+ Create ${query}`}
+              onCreate={(query) => {
+                const item = { value: query, label: query };
+                setLabels((current) => [...current, item]);
+                return item;
+              }}
+              onChange={setLabel}
+            />
+          </Group>
           <Box sx={{ margin: "auto" }}>
             <Text mt="xl" size="xl" fw={"bold"}>
               {priority >= 80
@@ -197,7 +179,7 @@ export function AddTaskForm() {
             <Slider
               value={priority}
               onChange={setPriority}
-              thumbSize={30}
+              thumbSize={15}
               color="#800080"
             />
           </Box>
@@ -208,7 +190,7 @@ export function AddTaskForm() {
             Save Task
           </Button>
         </form>
-      </Drawer>
+      </Card>
     </>
   );
 }

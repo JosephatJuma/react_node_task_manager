@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { SimpleGrid, Group, Stack, px, Chip, Grid, Title } from "@mantine/core";
+import {
+  SimpleGrid,
+  Group,
+  Stack,
+  px,
+  Chip,
+  Grid,
+  Title,
+  Button,
+} from "@mantine/core";
 import { Popover, ActionIcon, Tooltip } from "@mantine/core";
 import { Card, Text, Badge, Paper, Tabs, rem } from "@mantine/core";
-import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
+import { createStyles, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
-import { AddTaskForm } from "./AddTaskForm";
 
 import axios from "axios";
 import {
@@ -18,6 +26,7 @@ import {
   IconEye,
   IconLayoutKanban,
   IconCalendarCog,
+  IconPlus,
 } from "@tabler/icons-react";
 import { useDispatch } from "react-redux";
 import { view } from "../../state/reducers/viewTaskSlice";
@@ -300,7 +309,14 @@ export function Dashboard({ user }) {
               }}
             >
               <h3>Tasks</h3>
-              <AddTaskForm />
+              <Button
+                sx={{ backgroundColor: "#800080" }}
+                leftIcon={<IconPlus />}
+                component={Link}
+                to={"/tasks/add"}
+              >
+                Add
+              </Button>
             </Group>
             <Tabs
               defaultValue="all"
@@ -380,6 +396,9 @@ export function Dashboard({ user }) {
                         withBorder
                         className={classes.task}
                         key={index}
+                        component={Link}
+                        to={`/tasks/view?task=${task.id}`}
+                        onClick={() => dispatch(view(task))}
                       >
                         <Group className={classes.taskGroup}>
                           <IconLayoutKanban />
