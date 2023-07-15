@@ -192,7 +192,7 @@ export function Dashboard({ user }) {
               >
                 <Group sx={{ flexDirection: "column" }}>
                   <IconCalendarCheck size={50} />
-                  <h4>Completed Today</h4>
+                  <h4> Today</h4>
                 </Group>
                 <RingProgress
                   roundCaps
@@ -615,6 +615,7 @@ export function Dashboard({ user }) {
             </Tabs>
           </Card>
         </Stack>
+
         {getChild(
           getSubHeight(3, px(theme.spacing.md)),
           <>
