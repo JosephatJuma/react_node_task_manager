@@ -21,7 +21,7 @@ import {
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 //import {404} from "../../img/404.png";
-import { img } from "../../img/404.jpg";
+
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -77,7 +77,8 @@ function VeiewTask() {
           sx={{ backgroundColor: "unset" }}
         >
           <Title color="#800080">Error</Title>
-          <Image src={img} />
+          {/* <Image src={img} /> */}
+          <Text>The Task you are loonimg for is currently unavailable</Text>
         </Card>
       ) : (
         <Card
