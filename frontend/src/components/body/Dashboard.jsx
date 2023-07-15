@@ -137,7 +137,10 @@ export function Dashboard({ user }) {
   const tasksThisMonth = tasks.filter(
     (task) => new Date(task.due_date).getMonth() === new Date().getMonth()
   );
-
+  //get tasks over due
+  const tasksOverDue = tasks.filter((task) => {
+    return new Date(task.due_date) < today && task.status === "Not Started";
+  });
   return (
     <div style={{ width: "100%", margin: 10 }}>
       <h3 style={{ color: "#800080" }}>
@@ -236,14 +239,17 @@ export function Dashboard({ user }) {
                   size={90}
                   sections={[
                     {
-                      value: (1 / 100) * 100,
+                      value: (tasksOverDue.length / tasks.length) * 100,
                       color: "gold",
                     },
                   ]}
                   label={
                     <div>
                       <Text ta="center" fz="lg" className={classes.label}>
-                        {((1 / 100) * 100).toFixed(0)}%
+                        {((tasksOverDue.length / tasks.length) * 100).toFixed(
+                          0
+                        )}
+                        %
                       </Text>
                     </div>
                   }
@@ -641,7 +647,7 @@ export function Dashboard({ user }) {
                     sx={{ cursor: "pointer" }}
                     component={Link}
                     to={`/tasks/view?task=${task._id}`}
-                    //onClick={() => dispatch(view(task))}
+                    onClick={() => dispatch(view(task))}
                   >
                     <Text>{task.title}</Text>
                   </Badge>
