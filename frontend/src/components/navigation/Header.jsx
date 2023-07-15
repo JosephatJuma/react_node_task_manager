@@ -97,6 +97,7 @@ const useStyles = createStyles((theme) => ({
     padding: 10,
     backgroundColor: "#fff",
     color: "GrayText",
+    margin: "auto",
   },
   link: {
     ...theme.fn.focusStyles(),
@@ -107,6 +108,7 @@ const useStyles = createStyles((theme) => ({
     padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
     borderRadius: theme.radius.sm,
     fontWeight: 500,
+    color: "GrayText",
 
     "&:hover": {
       backgroundColor: "#800080",
@@ -172,7 +174,7 @@ export function AppHeader() {
           <Burger
             onClick={open}
             className={classes.burger}
-            size="lg"
+            size="md"
             color="white"
           />
           <Group>
