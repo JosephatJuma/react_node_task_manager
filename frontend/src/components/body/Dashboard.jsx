@@ -17,6 +17,7 @@ import {
   IconEditCircle,
   IconEye,
   IconLayoutKanban,
+  IconCalendarCog,
 } from "@tabler/icons-react";
 import { useDispatch } from "react-redux";
 import { view } from "../../state/reducers/viewTaskSlice";
@@ -256,8 +257,8 @@ export function Dashboard({ user }) {
                 className={classes.select}
               >
                 <Group sx={{ flexDirection: "column" }}>
-                  <IconCalendarOff size={50} />
-                  <h4>Over due</h4>
+                  <IconCalendarCog size={50} />
+                  <h4>This Month</h4>
                 </Group>
                 <RingProgress
                   roundCaps
@@ -265,14 +266,17 @@ export function Dashboard({ user }) {
                   size={90}
                   sections={[
                     {
-                      value: (1 / 100) * 100,
+                      value: (tasksThisMonth.length / tasks.length) * 100,
                       color: "gold",
                     },
                   ]}
                   label={
                     <div>
                       <Text ta="center" fz="lg" className={classes.label}>
-                        {((1 / 100) * 100).toFixed(0)}%
+                        {((tasksThisMonth.length / tasks.length) * 100).toFixed(
+                          0
+                        )}
+                        %
                       </Text>
                     </div>
                   }
@@ -635,7 +639,7 @@ export function Dashboard({ user }) {
                     key={index}
                     sx={{ cursor: "pointer" }}
                     component={Link}
-                    to={"/tasks/view"}
+                    to={`/tasks/view?task=${task._id}`}
                     //onClick={() => dispatch(view(task))}
                   >
                     <Text>{task.title}</Text>
