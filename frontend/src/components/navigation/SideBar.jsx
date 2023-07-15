@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { createStyles, Navbar, getStylesRef, rem } from "@mantine/core";
+import { createStyles, Navbar, getStylesRef, rem, Anchor } from "@mantine/core";
 import { IconSwitchHorizontal, IconLogout } from "@tabler/icons-react";
 import { ScrollArea } from "@mantine/core";
 import { data } from "../shared/data";
+import { Link, NavLink } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -83,20 +84,20 @@ export function SideBar() {
   const [active, setActive] = useState("Home");
 
   const links = data.map((item) => (
-    <a
+    <NavLink
       className={cx(classes.link, {
         [classes.linkActive]: item.label === active,
       })}
-      href={item.link}
       key={item.label}
       onClick={(event) => {
-        event.preventDefault();
         setActive(item.label);
       }}
+      component={Link}
+      to={item.link}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </NavLink>
   ));
 
   return (
@@ -109,14 +110,14 @@ export function SideBar() {
       <ScrollArea h={"100%"}>
         <Navbar.Section className={classes.header}>{links}</Navbar.Section>
         <Navbar.Section className={classes.footer}>
-          <a
-            href="/"
+          <Link
+            to={"/"}
             className={classes.link}
             onClick={(event) => event.preventDefault()}
           >
             <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
             <span>Change account</span>
-          </a>
+          </Link>
 
           <a
             href="/"

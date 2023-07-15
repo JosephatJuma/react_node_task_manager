@@ -19,10 +19,10 @@ import {
   IconHeart,
   IconTrash,
 } from "@tabler/icons-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { er } from "../../img/404.jpg";
-
+import axios from "axios";
+import { view } from "../../state/reducers/viewTaskSlice";
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -52,10 +52,23 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function VeiewTask() {
+  const dispatch = useDispatch();
+  const api_url = process.env.REACT_APP_API_URL;
   const { classes, theme } = useStyles();
 
   const task = useSelector((state) => state.view.task);
-
+  //send a task delete request
+  const deleteTask = async () => {
+    try {
+      const del = await axios.delete(`${api_url}tasks/${task._id}`);
+      if (del.data) {
+        console.log(del.data);
+        dispatch(view(null));
+      }
+    } catch (error) {
+      console.log("Error occured");
+    }
+  };
   return (
     <div>
       <ActionIcon
@@ -157,7 +170,12 @@ function VeiewTask() {
             <ActionIcon variant="default" radius="md" size={36}>
               <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
             </ActionIcon>
-            <ActionIcon variant="default" radius="md" size={36}>
+            <ActionIcon
+              variant="default"
+              radius="md"
+              size={36}
+              onClick={deleteTask}
+            >
               <IconTrash size="1.1rem" className={classes.like} stroke={1.5} />
             </ActionIcon>
             <ActionIcon variant="default" radius="md" size={36}>
