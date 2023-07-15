@@ -15,12 +15,13 @@ import {
   IconCalendar,
   IconClock,
   IconEdit,
+  IconError404,
   IconHeart,
   IconTrash,
 } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-//import {404} from "../../img/404.png";
+import { er } from "../../img/404.jpg";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -74,11 +75,16 @@ function VeiewTask() {
           radius="md"
           p="md"
           className={classes.card}
-          sx={{ backgroundColor: "unset" }}
+          sx={{
+            backgroundColor: "unset",
+            alignContent: "center",
+            justifyContent: "space-evenly",
+          }}
         >
           <Title color="#800080">Error</Title>
-          {/* <Image src={img} /> */}
-          <Text>The Task you are loonimg for is currently unavailable</Text>
+          <Image src={"../../img/404.jpg"} alt="Error image" />
+          <IconError404 size={300} color="#800080" />
+          <Text>The Task you are looking for is currently unavailable</Text>
         </Card>
       ) : (
         <Card
