@@ -17,11 +17,11 @@ import {
   IconEdit,
   IconHeart,
   IconTrash,
-  IconX,
 } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+//import {404} from "../../img/404.png";
+import { img } from "../../img/404.jpg";
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -61,7 +61,7 @@ function VeiewTask() {
         component={Link}
         to={"/"}
         sx={{
-          backgroundColor: task.color,
+          backgroundColor: "#800080",
           color: "white",
           margin: 20,
           ":hover": { backgroundColor: "black" },
@@ -69,81 +69,96 @@ function VeiewTask() {
       >
         <IconArrowBack size={40} />
       </ActionIcon>
-      <Card withBorder radius="md" p="md" className={classes.card} shadow="lg">
-        <Card.Section>
-          <Card
-            height={180}
-            sx={{
-              backgroundImage: theme.fn.linearGradient(
-                5,
-                task.color,
-                theme.colors.blue[6]
-              ),
-            }}
-          >
-            <Title color="white">{task.title}</Title>
-          </Card>
-        </Card.Section>
-
-        <Card.Section className={classes.section} mt="md">
-          <Group position="apart">
-            <Text fz="lg" fw={500}>
-              {task.title}
-            </Text>
-            <Badge size="sm">{task.status}</Badge>
-          </Group>
-          <Text fz="sm" mt="xs">
-            {task.description}
-          </Text>
-          <Group>
-            <IconCalendar color={task.color} />
-            <Text>{new Date(task.due_date).toDateString()}</Text>
-          </Group>
-          <Group>
-            <IconClock color={task.color} />
-            <Text>{task.due_time}</Text>
-          </Group>
-        </Card.Section>
-
-        <Card.Section className={classes.section}>
-          <Text mt="md" className={classes.label} c="dimmed">
-            {task.label}
-          </Text>
-
-          <Text c="dimmed" fz="sm" mt="md">
-            Task Priority:{" "}
-            <Text
-              span
-              fw={500}
-              sx={(theme) => ({
-                color: theme.colorScheme === "dark" ? theme.white : theme.black,
-              })}
+      {task === null ? (
+        <Card
+          radius="md"
+          p="md"
+          className={classes.card}
+          sx={{ backgroundColor: "unset" }}
+        >
+          <Title color="#800080">Error</Title>
+          <Image src={img} />
+        </Card>
+      ) : (
+        <Card
+          withBorder
+          radius="md"
+          p="md"
+          className={classes.card}
+          shadow="lg"
+        >
+          <Card.Section>
+            <Card
+              height={180}
+              sx={{
+                backgroundColor: task.color,
+              }}
             >
-              {task.priority}%
-            </Text>
-          </Text>
-          <Progress value={task.priority} color={task.color} />
-        </Card.Section>
+              <Title color="white">{task.title}</Title>
+            </Card>
+          </Card.Section>
 
-        <Group mt="xs">
-          <Button
-            radius="md"
-            style={{ flex: 1 }}
-            sx={{ backgroundColor: task.color }}
-          >
-            Mark as completed
-          </Button>
-          <ActionIcon variant="default" radius="md" size={36}>
-            <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon variant="default" radius="md" size={36}>
-            <IconTrash size="1.1rem" className={classes.like} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon variant="default" radius="md" size={36}>
-            <IconEdit size="1.1rem" className={classes.like} stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </Card>
+          <Card.Section className={classes.section} mt="md">
+            <Group position="apart">
+              <Text fz="lg" fw={500}>
+                {task.title}
+              </Text>
+              <Badge size="sm">{task.status}</Badge>
+            </Group>
+            <Text fz="sm" mt="xs">
+              {task.description}
+            </Text>
+            <Group>
+              <IconCalendar color={task.color} />
+              <Text>{new Date(task.due_date).toDateString()}</Text>
+            </Group>
+            <Group>
+              <IconClock color={task.color} />
+              <Text>{task.due_time}</Text>
+            </Group>
+          </Card.Section>
+
+          <Card.Section className={classes.section}>
+            <Text mt="md" className={classes.label} c="dimmed">
+              {task.label}
+            </Text>
+
+            <Text c="dimmed" fz="sm" mt="md">
+              Task Priority:{" "}
+              <Text
+                span
+                fw={500}
+                sx={(theme) => ({
+                  color:
+                    theme.colorScheme === "dark" ? theme.white : theme.black,
+                })}
+              >
+                {task.priority}%
+              </Text>
+            </Text>
+            <Progress value={task.priority} color={task.color} />
+          </Card.Section>
+
+          <Group mt="xs">
+            <Button
+              radius="md"
+              style={{ flex: 1 }}
+              sx={{ backgroundColor: task.color }}
+            >
+              Mark as completed
+            </Button>
+            <ActionIcon variant="default" radius="md" size={36}>
+              <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
+            </ActionIcon>
+            <ActionIcon variant="default" radius="md" size={36}>
+              <IconTrash size="1.1rem" className={classes.like} stroke={1.5} />
+            </ActionIcon>
+            <ActionIcon variant="default" radius="md" size={36}>
+              <IconEdit size="1.1rem" className={classes.like} stroke={1.5} />
+            </ActionIcon>
+          </Group>
+        </Card>
+      )}
     </div>
   );
 }

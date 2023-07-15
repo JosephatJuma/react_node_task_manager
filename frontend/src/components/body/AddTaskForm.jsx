@@ -188,10 +188,11 @@ export function AddTaskForm() {
               {priority >= 80
                 ? "Very High"
                 : priority >= 60
-                ? "High Priority"
+                ? "High"
                 : priority > 40
-                ? "Low Priority"
-                : "Very Low Priority"}
+                ? "Low"
+                : "Very Low"}{" "}
+              Priority
             </Text>
             <Slider
               value={priority}
