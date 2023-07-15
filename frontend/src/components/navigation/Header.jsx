@@ -35,6 +35,7 @@ import {
   IconBell,
   IconSwitchHorizontal,
 } from "@tabler/icons-react";
+import { Link, NavLink } from "react-router-dom";
 
 const HEADER_HEIGHT = rem(60);
 
@@ -258,22 +259,22 @@ export function AppHeader() {
             <Navbar.Section>
               {data.map((item) => {
                 return (
-                  <a
+                  <NavLink
                     className={cx(classes.link, {
                       [classes.linkActive]: item.label === active,
                     })}
-                    href={item.link}
                     key={item.label}
                     onClick={(event) => {
-                      event.preventDefault();
                       setActive(item.label);
                     }}
+                    component={Link}
+                    to={item.link}
                   >
                     <Flex>
                       <item.icon className={classes.linkIcon} stroke={1.5} />
                       <Text>{item.label}</Text>
                     </Flex>
-                  </a>
+                  </NavLink>
                 );
               })}
             </Navbar.Section>
