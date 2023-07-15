@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { SimpleGrid, Group, Stack, px, Chip } from "@mantine/core";
+import { SimpleGrid, Group, Stack, px, Chip, Grid, Title } from "@mantine/core";
 import { Popover, ActionIcon, Tooltip } from "@mantine/core";
 import { Card, Text, Badge, Paper, Tabs, rem } from "@mantine/core";
 import { createStyles, useMantineTheme, RingProgress } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { AddTaskForm } from "./AddTaskForm";
-import { modals } from "@mantine/modals";
+
 import axios from "axios";
 import {
   IconCalendarDue,
@@ -23,8 +23,8 @@ import { view } from "../../state/reducers/viewTaskSlice";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
-const getChild = (height, component) => (
-  <Card radius={"lg"} shadow="md" sx={{ maxHeight: 500 }}>
+const getChild = (height, component, background) => (
+  <Card sx={{ maxHeight: 500, backgroundColor: "unset" }}>
     <Card.Section>{component}</Card.Section>
   </Card>
 );
@@ -42,6 +42,9 @@ const useStyles = createStyles((theme) => ({
       color: "white",
       backgroundColor: "#800080",
     },
+    width: "45%",
+    margin: 5,
+    height: 200,
   },
   task: {
     margin: 10,
@@ -129,6 +132,11 @@ export function Dashboard({ user }) {
     return task.status === "Not Started";
   });
 
+  //get tasks fpr this month
+  const tasksThisMonth = tasks.filter(
+    (task) => new Date(task.due_date).getMonth() === new Date().getMonth()
+  );
+
   return (
     <div style={{ width: "100%", margin: 10 }}>
       <h3 style={{ color: "#800080" }}>
@@ -143,103 +151,136 @@ export function Dashboard({ user }) {
         <Stack>
           {getChild(
             getSubHeight(3, px(theme.spacing.md)),
-            <Card
-              shadow="sm"
-              padding="lg"
-              radius="lg"
-              withBorder
-              className={classes.select}
-            >
-              <>
-                <IconCalendarDue size={50} />
-                <h4>Due Today</h4>
-              </>
-              <RingProgress
-                roundCaps
-                thickness={10}
-                size={90}
-                sections={[
-                  {
-                    value: (tasksToday.length / tasks.length) * 100,
-                    color: "gold",
-                  },
-                ]}
-                label={
-                  <div>
-                    <Text ta="center" fz="lg" className={classes.label}>
-                      {((tasksToday.length / tasks.length) * 100).toFixed(0)}%
-                    </Text>
-                  </div>
-                }
-              />
-            </Card>
+            <Grid sx={{ justifyContent: "space-evenly" }}>
+              <Card
+                shadow="sm"
+                padding="lg"
+                radius="lg"
+                withBorder
+                className={classes.select}
+              >
+                <Group sx={{ flexDirection: "column" }}>
+                  <IconCalendarDue size={50} />
+                  <h4>Due Today</h4>
+                </Group>
+                <RingProgress
+                  roundCaps
+                  thickness={10}
+                  size={90}
+                  sections={[
+                    {
+                      value: (tasksToday.length / tasks.length) * 100,
+                      color: "gold",
+                    },
+                  ]}
+                  label={
+                    <div>
+                      <Text ta="center" fz="lg" className={classes.label}>
+                        {((tasksToday.length / tasks.length) * 100).toFixed(0)}%
+                      </Text>
+                    </div>
+                  }
+                />
+              </Card>
+              <Card
+                shadow="sm"
+                padding="lg"
+                radius="lg"
+                withBorder
+                className={classes.select}
+              >
+                <Group sx={{ flexDirection: "column" }}>
+                  <IconCalendarCheck size={50} />
+                  <h4>Completed Today</h4>
+                </Group>
+                <RingProgress
+                  roundCaps
+                  thickness={10}
+                  size={90}
+                  sections={[
+                    {
+                      value: (80 / 100) * 100,
+                      color: "gold",
+                    },
+                  ]}
+                  label={
+                    <div>
+                      <Text ta="center" fz="lg" className={classes.label}>
+                        {((80 / 100) * 100).toFixed(0)}%
+                      </Text>
+                    </div>
+                  }
+                />
+              </Card>
+            </Grid>
           )}
+
           {getChild(
             getSubHeight(3, px(theme.spacing.md)),
-            <Card
-              shadow="sm"
-              padding="lg"
-              radius="lg"
-              withBorder
-              className={classes.select}
-            >
-              <>
-                <IconCalendarCheck size={50} />
-                <h4>Completed Today</h4>
-              </>
-              <RingProgress
-                roundCaps
-                thickness={10}
-                size={90}
-                sections={[
-                  {
-                    value: (80 / 100) * 100,
-                    color: "gold",
-                  },
-                ]}
-                label={
-                  <div>
-                    <Text ta="center" fz="lg" className={classes.label}>
-                      {((80 / 100) * 100).toFixed(0)}%
-                    </Text>
-                  </div>
-                }
-              />
-            </Card>
+            <Grid sx={{ justifyContent: "space-evenly" }}>
+              <Card
+                shadow="sm"
+                padding="lg"
+                radius="lg"
+                withBorder
+                className={classes.select}
+              >
+                <Group sx={{ flexDirection: "column" }}>
+                  <IconCalendarOff size={50} />
+                  <h4>Over due</h4>
+                </Group>
+                <RingProgress
+                  roundCaps
+                  thickness={10}
+                  size={90}
+                  sections={[
+                    {
+                      value: (1 / 100) * 100,
+                      color: "gold",
+                    },
+                  ]}
+                  label={
+                    <div>
+                      <Text ta="center" fz="lg" className={classes.label}>
+                        {((1 / 100) * 100).toFixed(0)}%
+                      </Text>
+                    </div>
+                  }
+                />
+              </Card>
+              <Card
+                shadow="sm"
+                padding="lg"
+                radius="lg"
+                withBorder
+                className={classes.select}
+              >
+                <Group sx={{ flexDirection: "column" }}>
+                  <IconCalendarOff size={50} />
+                  <h4>Over due</h4>
+                </Group>
+                <RingProgress
+                  roundCaps
+                  thickness={10}
+                  size={90}
+                  sections={[
+                    {
+                      value: (1 / 100) * 100,
+                      color: "gold",
+                    },
+                  ]}
+                  label={
+                    <div>
+                      <Text ta="center" fz="lg" className={classes.label}>
+                        {((1 / 100) * 100).toFixed(0)}%
+                      </Text>
+                    </div>
+                  }
+                />
+              </Card>
+            </Grid>
           )}
-          {getChild(
-            getSubHeight(3, px(theme.spacing.md)),
-            <Card
-              shadow="sm"
-              padding="lg"
-              radius="lg"
-              withBorder
-              className={classes.select}
-            >
-              <>
-                <IconCalendarOff size={50} />
-                <h4>Over due</h4>
-              </>
-              <RingProgress
-                roundCaps
-                thickness={10}
-                size={90}
-                sections={[
-                  {
-                    value: (1 / 100) * 100,
-                    color: "gold",
-                  },
-                ]}
-                label={
-                  <div>
-                    <Text ta="center" fz="lg" className={classes.label}>
-                      {((1 / 100) * 100).toFixed(0)}%
-                    </Text>
-                  </div>
-                }
-              />
-            </Card>
-          )}
+
           <Card radius={"lg"}>
             <Group
               display={"flex"}
@@ -571,9 +612,9 @@ export function Dashboard({ user }) {
           </Card>
         </Stack>
         {getChild(
-          BASE_HEIGHT,
+          getSubHeight(3, px(theme.spacing.md)),
           <>
-            <Group position="center">
+            <Card radius={"lg"} sx={{ alignSelf: "center" }}>
               <Calendar
                 getDayProps={(day) => ({
                   selected: dates.some((s) => dayjs(day).isSame(s, "date")),
@@ -581,7 +622,27 @@ export function Dashboard({ user }) {
                 color="red"
                 sx={{ "::selection": { backgroundColor: "#800080" } }}
               />
-            </Group>
+            </Card>
+            <Card radius={"lg"} mt={10}>
+              <Title size={"sm"} color="#800080">
+                Tasks this Month
+              </Title>
+              {tasksThisMonth.map((task, index) => {
+                return (
+                  <Badge
+                    variant="gradient"
+                    gradient={{ from: "#800080", to: "cyan" }}
+                    key={index}
+                    sx={{ cursor: "pointer" }}
+                    component={Link}
+                    to={"/tasks/view"}
+                    //onClick={() => dispatch(view(task))}
+                  >
+                    <Text>{task.title}</Text>
+                  </Badge>
+                );
+              })}
+            </Card>
           </>
         )}
       </SimpleGrid>
