@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SimpleGrid, Group, Stack, px, Chip, Grid, Title } from "@mantine/core";
 import { Popover, ActionIcon, Tooltip } from "@mantine/core";
 import { Card, Text, Badge, Paper, Tabs, rem } from "@mantine/core";
@@ -24,7 +24,7 @@ import { view } from "../../state/reducers/viewTaskSlice";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
-const getChild = (height, component, background) => (
+const getChild = (component) => (
   <Card sx={{ maxHeight: 500, backgroundColor: "unset" }}>
     <Card.Section>{component}</Card.Section>
   </Card>
@@ -63,7 +63,7 @@ const useStyles = createStyles((theme) => ({
 export function Dashboard({ user }) {
   const api_url = process.env.REACT_APP_API_URL;
   const { classes } = useStyles();
-  const theme = useMantineTheme();
+
   const dispatch = useDispatch();
   const [tasks, setTasks] = React.useState([
     {
@@ -87,7 +87,7 @@ export function Dashboard({ user }) {
       status: "Completed",
     },
   ]);
-
+  const [currentCalendarDate, setCurrentCalenderDate] = useState(new Date());
   //fetch user tasks
   const fetchTasks = async () => {
     try {
@@ -135,7 +135,8 @@ export function Dashboard({ user }) {
 
   //get tasks fpr this month
   const tasksThisMonth = tasks.filter(
-    (task) => new Date(task.due_date).getMonth() === new Date().getMonth()
+    (task) =>
+      new Date(task.due_date).getMonth() === currentCalendarDate.getMonth()
   );
   //get tasks over due
   const tasksOverDue = tasks.filter((task) => {
@@ -154,7 +155,6 @@ export function Dashboard({ user }) {
       >
         <Stack>
           {getChild(
-            getSubHeight(3, px(theme.spacing.md)),
             <Grid sx={{ justifyContent: "space-evenly" }}>
               <Card
                 shadow="sm"
@@ -220,7 +220,6 @@ export function Dashboard({ user }) {
           )}
 
           {getChild(
-            getSubHeight(3, px(theme.spacing.md)),
             <Grid sx={{ justifyContent: "space-evenly" }}>
               <Card
                 shadow="sm"
@@ -623,36 +622,46 @@ export function Dashboard({ user }) {
         </Stack>
 
         {getChild(
-          getSubHeight(3, px(theme.spacing.md)),
           <>
-            <Card radius={"lg"} sx={{ alignSelf: "center" }}>
+            <Card radius={"lg"}>
               <Calendar
                 getDayProps={(day) => ({
                   selected: dates.some((s) => dayjs(day).isSame(s, "date")),
                 })}
                 color="red"
                 sx={{ "::selection": { backgroundColor: "#800080" } }}
+                onNextMonth={(value) => setCurrentCalenderDate(value)}
+                onPreviousMonth={(value) => setCurrentCalenderDate(value)}
               />
             </Card>
             <Card radius={"lg"} mt={10}>
               <Title size={"sm"} color="#800080">
                 Tasks this Month
               </Title>
-              {tasksThisMonth.map((task, index) => {
-                return (
-                  <Badge
-                    variant="gradient"
-                    gradient={{ from: "#800080", to: "cyan" }}
-                    key={index}
-                    sx={{ cursor: "pointer" }}
-                    component={Link}
-                    to={`/tasks/view?task=${task._id}`}
-                    onClick={() => dispatch(view(task))}
-                  >
-                    <Text>{task.title}</Text>
-                  </Badge>
-                );
-              })}
+              {tasksThisMonth.length > 0 ? (
+                tasksThisMonth.map((task, index) => {
+                  return (
+                    <Badge
+                      variant="gradient"
+                      gradient={{ from: "#800080", to: "cyan" }}
+                      key={index}
+                      sx={{ cursor: "pointer" }}
+                      component={Link}
+                      to={`/tasks/view?task=${task._id}`}
+                      onClick={() => dispatch(view(task))}
+                    >
+                      <Text>{task.title}</Text>
+                    </Badge>
+                  );
+                })
+              ) : (
+                <Badge color="#800080">
+                  <Text>
+                    Good for you, no tasks for{" "}
+                    {currentCalendarDate.toDateString()}
+                  </Text>
+                </Badge>
+              )}
             </Card>
           </>
         )}
