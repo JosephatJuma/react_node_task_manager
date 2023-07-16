@@ -19,6 +19,8 @@ import {
   Title,
   Center,
   Progress,
+  Tabs,
+  Timeline,
 } from "@mantine/core";
 import { useSelector } from "react-redux";
 import {
@@ -26,13 +28,20 @@ import {
   IconBrandGithub,
   IconBrandLinkedin,
   IconBrandTwitter,
+  IconList,
+  IconLocation,
   IconPhoneCall,
+  IconSettings,
+  IconSocial,
+  IconUser,
+  IconUserCheck,
 } from "@tabler/icons-react";
+
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    width: "100%",
+    width: "95%",
   },
 
   imageSection: {
@@ -89,7 +98,8 @@ function Profile() {
         >
           <Card
             withBorder
-            radius="md"
+            radius="lg"
+            shadow="lg"
             className={classes.card}
             sx={{ margin: 10 }}
           >
@@ -173,25 +183,109 @@ function Profile() {
           </Card>
           <Card
             withBorder
-            radius="md"
+            radius="lg"
+            shadow="lg"
             className={classes.card}
             sx={{ margin: 10 }}
           >
-            <Center>
-              <Title sx={{ textTransform: "uppercase", color: "#800080" }}>
-                My backlog
-              </Title>
-            </Center>
-            <Group>
-              <Text>Gruop Name</Text>
-              <Avatar.Group spacing="sm">
-                <Avatar src="image.png" radius="xl" />
-                <Avatar src="image.png" radius="xl" />
-                <Avatar src="image.png" radius="xl" />
-                <Avatar radius="xl">+5</Avatar>
-              </Avatar.Group>
-              <Progress />
-            </Group>
+            <Tabs defaultValue="Profile">
+              <Tabs.List>
+                <Tabs.Tab icon={<IconUser size="0.8rem" />} value="Profile">
+                  Profile
+                </Tabs.Tab>
+                <Tabs.Tab
+                  icon={<IconSettings size="0.8rem" />}
+                  value="settings"
+                >
+                  Settings
+                </Tabs.Tab>
+                <Tabs.Tab icon={<IconList size="0.8rem" />} value="backlog">
+                  Backlog
+                </Tabs.Tab>
+              </Tabs.List>
+              <Tabs.Panel value="Profile">
+                <Timeline active={1} bulletSize={24} lineWidth={2}>
+                  <Timeline.Item
+                    bullet={<IconUserCheck size={12} />}
+                    title="Create Account"
+                  >
+                    <Text color="dimmed" size="sm">
+                      You&apos;ve created new branch{" "}
+                      <Text variant="link" component="span" inherit>
+                        fix-notifications
+                      </Text>{" "}
+                      from master
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      2 hours ago
+                    </Text>
+                  </Timeline.Item>
+
+                  <Timeline.Item
+                    bullet={<IconSocial size={12} />}
+                    title="Socials"
+                  >
+                    <Text color="dimmed" size="sm">
+                      You&apos;ve pushed 23 commits to
+                      <Text variant="link" component="span" inherit>
+                        fix-notifications branch
+                      </Text>
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      52 minutes ago
+                    </Text>
+                  </Timeline.Item>
+
+                  <Timeline.Item
+                    title="Pull request"
+                    bullet={<IconLocation size={12} />}
+                    lineVariant="dashed"
+                  >
+                    <Text color="dimmed" size="sm">
+                      You&apos;ve submitted a pull request
+                      <Text variant="link" component="span" inherit>
+                        Fix incorrect notification message (#187)
+                      </Text>
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      34 minutes ago
+                    </Text>
+                  </Timeline.Item>
+
+                  <Timeline.Item
+                    title="Code review"
+                    bullet={<IconPhoneCall size={12} />}
+                  >
+                    <Text color="dimmed" size="sm">
+                      <Text variant="link" component="span" inherit>
+                        Robert Gluesticker
+                      </Text>{" "}
+                      left a code review on your pull request
+                    </Text>
+                    <Text size="xs" mt={4}>
+                      12 minutes ago
+                    </Text>
+                  </Timeline.Item>
+                </Timeline>
+              </Tabs.Panel>
+              <Tabs.Panel value="backlog" pt="xs">
+                <Center>
+                  <Title sx={{ textTransform: "uppercase", color: "#800080" }}>
+                    My backlog
+                  </Title>
+                </Center>
+                <Group>
+                  <Text>Gruop Name</Text>
+                  <Avatar.Group spacing="sm">
+                    <Avatar src="image.png" radius="xl" />
+                    <Avatar src="image.png" radius="xl" />
+                    <Avatar src="image.png" radius="xl" />
+                    <Avatar radius="xl">+5</Avatar>
+                  </Avatar.Group>
+                  <Progress />
+                </Group>
+              </Tabs.Panel>
+            </Tabs>
           </Card>
         </SimpleGrid>
       </Flex>
