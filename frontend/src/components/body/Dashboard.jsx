@@ -31,10 +31,11 @@ import {
   IconUser,
   IconLogout,
 } from "@tabler/icons-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { view } from "../../state/reducers/viewTaskSlice";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { userTasks } from "../../state/reducers/tasksSlice";
 
 const getChild = (component) => (
   <Card sx={{ maxHeight: 500, backgroundColor: "unset" }}>
@@ -78,34 +79,35 @@ export function Dashboard({ user }) {
   const { classes } = useStyles();
 
   const dispatch = useDispatch();
-  const [tasks, setTasks] = React.useState([
-    {
-      title: "Write a blog post",
-      description: "This is a blog post about the importance of data science.",
-      due_date: "2023-07-15",
-      status: "In progress",
-    },
-    {
-      title: "Meet with client",
-      description:
-        "This is a meeting with the client to discuss their data science needs.",
-      due_date: "2023-07-18",
-      status: "Pending",
-    },
-    {
-      title: "Give a presentation",
-      description:
-        "This is a presentation about data science for a local business.",
-      due_date: "2023-07-20",
-      status: "Completed",
-    },
-  ]);
+  const tasks = useSelector((state) => state.tasks.userTasks);
+  // const [tasks, setTasks] = React.useState([
+  // {
+  //   title: "Write a blog post",
+  //   description: "This is a blog post about the importance of data science.",
+  //   due_date: "2023-07-15",
+  //   status: "In progress",
+  // },
+  // {
+  //   title: "Meet with client",
+  //   description:
+  //     "This is a meeting with the client to discuss their data science needs.",
+  //   due_date: "2023-07-18",
+  //   status: "Pending",
+  // },
+  // {
+  //   title: "Give a presentation",
+  //   description:
+  //     "This is a presentation about data science for a local business.",
+  //   due_date: "2023-07-20",
+  //   status: "Completed",
+  // },
+  // ]);
   const [currentCalendarDate, setCurrentCalenderDate] = useState(new Date());
   //fetch user tasks
   const fetchTasks = async () => {
     try {
       const response = await axios.get(`${api_url}tasks/${user._id}`);
-      setTasks(response.data.tasks);
+      dispatch(userTasks(response.data.tasks));
     } catch (error) {
       console.log(error.message);
     }
