@@ -22,6 +22,8 @@ import {
   Indicator,
   Dialog,
   Button,
+  ActionIcon,
+  Modal,
 } from "@mantine/core";
 import { useMantineTheme } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
@@ -34,6 +36,7 @@ import {
   IconChevronDown,
   IconBell,
   IconSwitchHorizontal,
+  IconTrash,
 } from "@tabler/icons-react";
 import { Link, NavLink } from "react-router-dom";
 
@@ -93,12 +96,13 @@ const useStyles = createStyles((theme) => ({
       visibility: "hidden",
     },
     alignContent: "start",
+    padding: 20,
+    backgroundColor: "#fff",
   },
   navbar: {
     padding: 10,
     backgroundColor: "#fff",
     color: "GrayText",
-    margin: "auto",
   },
   link: {
     ...theme.fn.focusStyles(),
@@ -149,7 +153,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function AppHeader() {
+export function AppHeader({ active }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [dialog, setDialog] = useState(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -159,7 +163,7 @@ export function AppHeader() {
       "https://media.istockphoto.com/id/1309328823/photo/headshot-portrait-of-smiling-male-employee-in-office.jpg?b=1&s=612x612&w=0&k=20&c=eU56mZTN4ZXYDJ2SR2DFcQahxEnIl3CiqpP3SOQVbbI=",
   };
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Home");
+  //const [active, setActive] = useState("Home");
   const mobile = useMediaQuery("(max-width: 48.25em)");
   //const [mobile, setMobile] = useState(useMantineTheme().fn.smallerThan("sm"));
   return (
@@ -186,17 +190,25 @@ export function AppHeader() {
             />
             <Group>
               <Indicator inline label="10" size={16} radius={"lg"}>
-                <IconBell className={classes.headerIcon} />
+                <ActionIcon>
+                  <IconBell />
+                </ActionIcon>
               </Indicator>
-              <IconMessage className={classes.headerIcon} />
+              <ActionIcon>
+                <IconMessage />
+              </ActionIcon>
             </Group>
             <Menu
-              width={260}
+              width={200}
               position="bottom-end"
               transitionProps={{ transition: "pop-top-right" }}
               onClose={() => setUserMenuOpened(false)}
               onOpen={() => setUserMenuOpened(true)}
               withinPortal
+              radius={"lg"}
+              shadow="lg"
+              withArrow
+              arrowSize={20}
             >
               <Menu.Target>
                 <UnstyledButton
@@ -218,10 +230,10 @@ export function AppHeader() {
               </Menu.Target>
               <Menu.Dropdown>
                 <Menu.Item icon={<IconStar size="0.9rem" stroke={1.5} />}>
-                  Saved posts
+                  Stared Tasks
                 </Menu.Item>
                 <Menu.Item icon={<IconMessage size="0.9rem" stroke={1.5} />}>
-                  Your comments
+                  Saved Notes
                 </Menu.Item>
                 <Menu.Label>Settings</Menu.Label>
                 <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
@@ -235,6 +247,9 @@ export function AppHeader() {
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Label>Danger zone</Menu.Label>
+                <Menu.Item icon={<IconTrash size="0.9rem" stroke={1.5} />}>
+                  Delete Account
+                </Menu.Item>
               </Menu.Dropdown>
             </Menu>
           </Group>
@@ -251,7 +266,7 @@ export function AppHeader() {
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
         sx={{ backgroundColor: "red" }}
-        withCloseButton={false}
+        withCloseButton={true}
       >
         <Drawer.Content className={classes.drawer}>
           <Navbar className={classes.navbar}>
@@ -264,9 +279,9 @@ export function AppHeader() {
                       [classes.linkActive]: item.label === active,
                     })}
                     key={item.label}
-                    onClick={(event) => {
-                      setActive(item.label);
-                    }}
+                    // onClick={(event) => {
+                    //   setActive(item.label);
+                    // }}
                     component={Link}
                     to={item.link}
                   >
@@ -303,23 +318,20 @@ export function AppHeader() {
           </Navbar>
         </Drawer.Content>
       </Drawer>
-      <Dialog
+      <Modal
         opened={dialog}
         withCloseButton
         onClose={() => setDialog(false)}
         position={{ top: 20, right: 20 }}
-        size="lg"
+        size="sm"
         radius="md"
         sx={{ backgroundColor: "#d0342c", color: "white" }}
+        title="Sure, you want quit?"
       >
-        <Text size="lg" mb="xs" weight={500}>
-          Sure, you want quit?
-        </Text>
-
         <Group align="flex-end">
           <Button onClick={close}>Logout</Button>
         </Group>
-      </Dialog>
+      </Modal>
     </>
   );
 }

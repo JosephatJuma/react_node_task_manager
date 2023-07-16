@@ -23,6 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { view } from "../../state/reducers/viewTaskSlice";
+import { AppHeader } from "../navigation/Header";
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
@@ -71,6 +72,7 @@ function VeiewTask() {
   };
   return (
     <div>
+      <AppHeader />
       <ActionIcon
         component={Link}
         to={"/"}

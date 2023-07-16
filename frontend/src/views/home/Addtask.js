@@ -6,9 +6,9 @@ import { Flex } from "@mantine/core";
 export default function Addtask() {
   return (
     <div>
-      <AppHeader />
+      <AppHeader active={"Add Task"} />
       <Flex>
-        <SideBar />
+        <SideBar active={"Add Task"} />
         <AddTaskForm />
       </Flex>
     </div>
