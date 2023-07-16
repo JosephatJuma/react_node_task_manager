@@ -27,6 +27,9 @@ import {
   IconLayoutKanban,
   IconCalendarCog,
   IconPlus,
+  IconSettings,
+  IconUser,
+  IconLogout,
 } from "@tabler/icons-react";
 import { useDispatch } from "react-redux";
 import { view } from "../../state/reducers/viewTaskSlice";
@@ -153,11 +156,27 @@ export function Dashboard({ user }) {
   });
   return (
     <div style={{ width: "100%", margin: 10 }}>
-      <h3 style={{ color: "#800080" }}>
-        Hello,
-        {user.name}
-        <IconHandMove />
-      </h3>
+      <Card shadow="lg" radius={"md"} m={10}>
+        <Group sx={{ justifyContent: "space-between" }}>
+          <Title color="#800080" size={20}>
+            {today.getHours() < 12
+              ? "Good Morning"
+              : today.getHours() < 16
+              ? "Good Afternoon"
+              : "Good Evening"}{" "}
+            {user.name}
+            <IconHandMove />
+          </Title>
+          <Group>
+            <ActionIcon>
+              <IconSettings />
+            </ActionIcon>
+            <ActionIcon>
+              <IconUser />
+            </ActionIcon>
+          </Group>
+        </Group>
+      </Card>
       <SimpleGrid
         cols={2}
         breakpoints={[{ maxWidth: "xs", cols: 1, margin: 10 }]}

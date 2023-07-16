@@ -14,9 +14,9 @@ export default function Home() {
         <Navigate to={"/login"} />
       ) : (
         <div className="App">
-          <AppHeader />
+          <AppHeader active={"Home"} />
           <Flex>
-            <SideBar />
+            <SideBar active={"Home"} />
             <Dashboard user={user} />
           </Flex>
         </div>

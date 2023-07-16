@@ -79,9 +79,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function SideBar() {
+export function SideBar({ active }) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Home");
+  //const [active, setActive] = useState("Home");
 
   const links = data.map((item) => (
     <NavLink
@@ -89,9 +89,9 @@ export function SideBar() {
         [classes.linkActive]: item.label === active,
       })}
       key={item.label}
-      onClick={(event) => {
-        setActive(item.label);
-      }}
+      // onClick={(event) => {
+      //   setActive(item.label);
+      // }}
       component={Link}
       to={item.link}
     >
