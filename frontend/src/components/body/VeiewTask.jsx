@@ -72,15 +72,12 @@ function VeiewTask() {
   };
 
   //update status
-  const updateStatus = async () => {
+  const updateTask = async (field) => {
     try {
-      const update = await axios.patch(`${api_url}tasks/${task._id}`, {
-        field: "status",
-        value: "Completed",
-      });
+      const update = await axios.patch(`${api_url}tasks/${task._id}`, field);
       if (update.data) {
         console.log(update.data);
-        dispatch(view({ ...task, status: "Completed" })); //update the selected item
+        dispatch(view({ ...task, status: field.value })); //update the selected item
       }
     } catch (error) {
       console.log("Error occured");
@@ -178,14 +175,51 @@ function VeiewTask() {
           </Card.Section>
 
           <Group mt="xs">
-            <Button
-              radius="md"
-              style={{ flex: 1 }}
-              sx={{ backgroundColor: task.color }}
-              onClick={updateStatus}
-            >
-              Mark as completed
-            </Button>
+            {task.status === "In Progress" && (
+              <Button
+                radius="md"
+                style={{ flex: 1 }}
+                sx={{ backgroundColor: task.color }}
+                onClick={() =>
+                  updateTask({
+                    field: "status",
+                    value: "Completed",
+                  })
+                }
+              >
+                Mark as completed
+              </Button>
+            )}
+            {task.status === "Not Started" && (
+              <Button
+                radius="md"
+                style={{ flex: 1 }}
+                sx={{ backgroundColor: task.color }}
+                onClick={() =>
+                  updateTask({
+                    field: "status",
+                    value: "In Progress",
+                  })
+                }
+              >
+                Mark as In Progress
+              </Button>
+            )}
+            {task.status === "Completed" && (
+              <Button
+                radius="md"
+                style={{ flex: 1 }}
+                sx={{ backgroundColor: task.color }}
+                onClick={() =>
+                  updateTask({
+                    field: "status",
+                    value: "Not Started",
+                  })
+                }
+              >
+                Mark In Not Started
+              </Button>
+            )}
             <ActionIcon variant="default" radius="md" size={36}>
               <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
             </ActionIcon>
