@@ -15,6 +15,7 @@ exports.addTask = async (req, res) => {
 //get user's tasks
 exports.all = async (req, res) => {
   await Task.find({ user_id: req.params.user_id })
+    .sort({ _id: -1 })
     .then((userTasks) => {
       res.send({ tasks: userTasks });
     })
