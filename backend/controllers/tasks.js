@@ -38,5 +38,14 @@ exports.delete = async (req, res) => {
 //edit specified details of the task
 
 exports.modify = async (req, res) => {
-  res.send("Working on it");
+  const { field, value } = req.body;
+  const updateQuery = { $set: {} };
+  updateQuery.$set[field] = value;
+  await Task.updateOne({ _id: req.params.task_id }, updateQuery)
+    .then((updated) => {
+      res.send({ success: updated });
+    })
+    .catch((err) => {
+      res.send({ message: err.message });
+    });
 };

@@ -60,11 +60,12 @@ const useStyles = createStyles((theme) => ({
     height: 200,
   },
   task: {
-    margin: 10,
     borderWidth: 2,
     padding: 20,
     minHeight: 50,
     ":hover": { backgroundColor: "gold" },
+    fontFamily: "Poppins",
+    marginTop: 5,
   },
   taskGroup: {
     flexDirection: "row",
@@ -318,7 +319,7 @@ export function Dashboard({ user }) {
             </Grid>
           )}
 
-          <Card radius={"lg"}>
+          <Card radius={"lg"} shadow="xl">
             <Group
               display={"flex"}
               sx={{
@@ -416,7 +417,7 @@ export function Dashboard({ user }) {
                         className={classes.task}
                         key={index}
                         component={Link}
-                        to={`/tasks/view?task=${task.id}`}
+                        to={`/tasks/view?task=${task._id}`}
                         onClick={() => dispatch(view(task))}
                       >
                         <Group className={classes.taskGroup}>

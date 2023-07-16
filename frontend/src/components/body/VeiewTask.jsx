@@ -70,6 +70,22 @@ function VeiewTask() {
       console.log("Error occured");
     }
   };
+
+  //update status
+  const updateStatus = async () => {
+    try {
+      const update = await axios.patch(`${api_url}tasks/${task._id}`, {
+        field: "status",
+        value: "Completed",
+      });
+      if (update.data) {
+        console.log(update.data);
+        dispatch(view({ ...task, status: "Completed" })); //update the selected item
+      }
+    } catch (error) {
+      console.log("Error occured");
+    }
+  };
   return (
     <div>
       <AppHeader />
@@ -166,6 +182,7 @@ function VeiewTask() {
               radius="md"
               style={{ flex: 1 }}
               sx={{ backgroundColor: task.color }}
+              onClick={updateStatus}
             >
               Mark as completed
             </Button>
