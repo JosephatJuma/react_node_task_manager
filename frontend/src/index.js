@@ -3,13 +3,31 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, GlobalStyles } from "@mantine/core";
+
 import { Provider } from "react-redux";
 import store from "./state/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 const Application = () => {
   return (
-    <MantineProvider>
+    <MantineProvider
+      theme={{
+        globalStyles: (theme) => ({
+          body: {
+            ...theme.fn.fontStyles(),
+            color:
+              theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+            lineHeight: theme.lineHeight,
+            fontFamily: "Poppins",
+          },
+
+          ".task": {
+            backgroundColor: "red",
+          },
+        }),
+      }}
+    >
       <App />
     </MantineProvider>
   );
