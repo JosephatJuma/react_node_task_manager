@@ -102,7 +102,7 @@ export function SideBar({ active }) {
 
   return (
     <Navbar
-      width={{ sm: 300 }}
+      width={{ sm: 250 }}
       p="md"
       className={classes.navbar}
       sx={{ position: "sticky" }}
