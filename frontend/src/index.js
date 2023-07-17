@@ -13,20 +13,18 @@ const Application = () => {
   return (
     <MantineProvider
       theme={{
+        colorScheme: "light",
         globalStyles: (theme) => ({
           body: {
-            ...theme.fn.fontStyles(),
-            color:
-              theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+            //color:
+            //theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
             lineHeight: theme.lineHeight,
             fontFamily: "Poppins",
           },
-
-          ".task": {
-            backgroundColor: "red",
-          },
         }),
       }}
+      // withGlobalStyles
+      // withNormalizeCSS
     >
       <App />
     </MantineProvider>

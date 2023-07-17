@@ -30,7 +30,7 @@ export function AddTaskForm() {
   const [priority, setPriority] = useState(50);
   const [labels, setLabels] = useState([
     { value: "School", label: "School" },
-    { value: "Church", label: "Churck" },
+    { value: "Church", label: "Church" },
     { value: "Hangout", label: "Hangout" },
     { value: "Work", label: "Work" },
     { value: "Sports", label: "Sports" },
@@ -61,6 +61,13 @@ export function AddTaskForm() {
       setMessage(response.data.message);
       if (response.data.success === true) {
         setSucess(true);
+        setColor("");
+        setTime("");
+        setTitle("");
+        setDate("");
+        setPriority(50);
+        setDescription("");
+        setLabel("");
       }
     } catch (error) {
       setMessage(error.message);
@@ -135,18 +142,21 @@ export function AddTaskForm() {
                 "#fab005",
                 "#fd7e14",
               ]}
+              value={color}
               onChange={setColor}
             />
           </Group>
           <Group>
             <Select
               label="Status"
-              placeholder="Select Initial"
+              placeholder="Select Initial Status"
+              defaultChecke="Not Started"
               data={[
                 { value: "Not Started", label: "Not Started" },
                 { value: "In Progress", label: "In Progress" },
                 { value: "Completed", label: "Completed" },
               ]}
+              value={status}
               onChange={setStatus}
             />
             <Select
@@ -162,6 +172,7 @@ export function AddTaskForm() {
                 setLabels((current) => [...current, item]);
                 return item;
               }}
+              value={label}
               onChange={setLabel}
             />
           </Group>
