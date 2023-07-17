@@ -37,7 +37,6 @@ exports.delete = async (req, res) => {
 };
 
 //edit specified details of the task
-
 exports.modify = async (req, res) => {
   const { field, value } = req.body;
   const updateQuery = { $set: {} };

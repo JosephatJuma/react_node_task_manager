@@ -3,7 +3,6 @@ import {
   SimpleGrid,
   Group,
   Stack,
-  px,
   Chip,
   Grid,
   Title,
@@ -29,7 +28,6 @@ import {
   IconPlus,
   IconSettings,
   IconUser,
-  IconLogout,
 } from "@tabler/icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { view } from "../../state/reducers/viewTaskSlice";
@@ -80,28 +78,7 @@ export function Dashboard({ user }) {
 
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.userTasks);
-  // const [tasks, setTasks] = React.useState([
-  // {
-  //   title: "Write a blog post",
-  //   description: "This is a blog post about the importance of data science.",
-  //   due_date: "2023-07-15",
-  //   status: "In progress",
-  // },
-  // {
-  //   title: "Meet with client",
-  //   description:
-  //     "This is a meeting with the client to discuss their data science needs.",
-  //   due_date: "2023-07-18",
-  //   status: "Pending",
-  // },
-  // {
-  //   title: "Give a presentation",
-  //   description:
-  //     "This is a presentation about data science for a local business.",
-  //   due_date: "2023-07-20",
-  //   status: "Completed",
-  // },
-  // ]);
+
   const [currentCalendarDate, setCurrentCalenderDate] = useState(new Date());
   //fetch user tasks
   const fetchTasks = async () => {
@@ -174,7 +151,7 @@ export function Dashboard({ user }) {
             <ActionIcon>
               <IconSettings />
             </ActionIcon>
-            <ActionIcon>
+            <ActionIcon component={Link} to={"/profile"}>
               <IconUser />
             </ActionIcon>
           </Group>

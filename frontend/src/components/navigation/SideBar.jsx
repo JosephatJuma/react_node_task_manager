@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { createStyles, Navbar, getStylesRef, rem, Anchor } from "@mantine/core";
+import { createStyles, Navbar, getStylesRef, rem } from "@mantine/core";
 import { IconSwitchHorizontal, IconLogout } from "@tabler/icons-react";
 import { ScrollArea } from "@mantine/core";
 import { data } from "../shared/data";
@@ -102,10 +101,11 @@ export function SideBar({ active }) {
 
   return (
     <Navbar
-      width={{ sm: 250 }}
+      width={{ sm: 240 }}
       p="md"
       className={classes.navbar}
       sx={{ position: "sticky" }}
+      shadow="lg"
     >
       <ScrollArea h={"100%"}>
         <Navbar.Section className={classes.header}>{links}</Navbar.Section>

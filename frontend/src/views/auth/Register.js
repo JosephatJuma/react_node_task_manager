@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Paper,
   TextInput,
@@ -13,14 +13,14 @@ import {
   Dialog,
   LoadingOverlay,
   Text,
+  Center,
+  Title,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { IconBrandGoogle, IconBrandTwitter, IconX } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import useRegister from "../../hooks/userRegister";
 import { Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../state/reducers/registerSlice";
 function Register() {
   const api_url = process.env.REACT_APP_API_URL;
 
@@ -45,6 +45,8 @@ function Register() {
         )
           ? null
           : "Invalid Name",
+      terms: (val) =>
+        val !== true ? "You must agree to terms and conditions" : null,
     },
   });
 
@@ -66,8 +68,19 @@ function Register() {
         <IconX size="1.1rem" color="white" />
         <Text color="white">{message}</Text>
       </Dialog>
-      <h2>Create Account</h2>
-      <Paper radius="md" withBorder shadow="lg" p={30} mt={30}>
+      <Title
+        align="center"
+        sx={(theme) => ({
+          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+          fontWeight: 900,
+        })}
+      >
+        Create Account
+      </Title>
+      <Text color="dimmed" size="sm" align="center" mt={5}>
+        Join the community today!
+      </Text>
+      <Paper radius="md" withBorder shadow="lg" p={30}>
         <Group grow mb="md" mt="md">
           <Button leftIcon={<IconBrandGoogle />} radius="xl">
             Google
@@ -111,7 +124,7 @@ function Register() {
               onChange={(event) =>
                 form.setFieldValue("email", event.currentTarget.value)
               }
-              error={form.errors.email && "Invalid email"}
+              error={form.errors.email && form.errors.email}
               radius="md"
             />
 
@@ -122,10 +135,7 @@ function Register() {
               onChange={(event) =>
                 form.setFieldValue("password", event.currentTarget.value)
               }
-              error={
-                form.errors.password &&
-                "Password should include at least 6 characters"
-              }
+              error={form.errors.password && form.errors.password}
               radius="md"
             />
 
@@ -135,12 +145,14 @@ function Register() {
               onChange={(event) =>
                 form.setFieldValue("terms", event.currentTarget.checked)
               }
+              error={form.errors.terms && form.errors.terms}
             />
           </Stack>
-
-          <Button type="submit" radius="xl">
-            Sign Up
-          </Button>
+          <Center>
+            <Button type="submit" radius="xl" fullWidth={true}>
+              Sign Up
+            </Button>
+          </Center>
         </form>
 
         <Anchor component={Link} to="/login" color="dimmed" size="xs">

@@ -7,6 +7,7 @@ import Register from "./views/auth/Register";
 import VeiewTask from "./components/body/VeiewTask";
 import Addtask from "./views/home/Addtask";
 import Profile from "./views/home/Profile";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
+    // </ThemeProvider>
   );
 }
 
